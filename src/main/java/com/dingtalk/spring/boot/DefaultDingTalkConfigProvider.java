@@ -2,14 +2,13 @@ package com.dingtalk.spring.boot;
 
 import com.dingtalk.spring.boot.property.*;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider, InitializingBean {
+public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
 
     private final DingTalkProperties dingTalkProperties;
     private Map<String, String> appKeySecret = new ConcurrentHashMap<>();
@@ -18,8 +17,7 @@ public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider, In
         this.dingTalkProperties = dingTalkProperties;
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
+    public void init() {
 
         if(!CollectionUtils.isEmpty(this.dingTalkProperties.getCorpApps())) {
             for (DingTalkCorpAppProperties properties : this.dingTalkProperties.getCorpApps()) {
