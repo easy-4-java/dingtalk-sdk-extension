@@ -343,7 +343,9 @@
                 <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
                 <additionalparam>-Xdoclint:none</additionalparam>
                 <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
-            </properties>
+            
+		<dingtalk-service-sdk.version>2.0.0</dingtalk-service-sdk.version>
+		<commons-collections4.version>4.5.0</commons-collections4.version></properties>
         </profile>
         <!-- 发布到 Maven Central Portal：mvn -Prelease deploy（GPG 签名 + 源码 + Javadoc + Central 发布插件） -->
 
@@ -517,7 +519,7 @@
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>alibaba-dingtalk-service-sdk</artifactId>
-                <version>2.0.0</version>
+                <version>${dingtalk-service-sdk.version}</version>
             </dependency>
             <!-- For Jackson -->
             <dependency>
@@ -555,7 +557,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
-                <version>4.4</version>
+                <version>${commons-collections4.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
