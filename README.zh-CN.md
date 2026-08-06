@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-green)
+[![Java](https://img.shields.io/badge/Java-17-orange)](https://github.com/easy-4-java/dingtalk-sdk-extension) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 > 钉钉开放平台的 Java 扩展 SDK：基于官方 `alibaba-dingtalk-service-sdk`，提供
 > 模板化的机器人、JSAPI、用户、SNS 登录、SSO 与账号管理操作。
