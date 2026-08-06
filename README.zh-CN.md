@@ -1,6 +1,8 @@
 # dingtalk-sdk-extension
 
-[![Java](https://img.shields.io/badge/Java-21-orange)] [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)
+[English](./README.md) | [简体中文](./README.zh-CN.md)
+
+[![License](https://img.shields.io/badge/license-Apache%202.0-green)
 
 > 钉钉开放平台的 Java 扩展 SDK：基于官方 `alibaba-dingtalk-service-sdk`，提供
 > 模板化的机器人、JSAPI、用户、SNS 登录、SSO 与账号管理操作。
@@ -18,8 +20,6 @@
 - [9. 测试与构建](#9-测试与构建)
 - [10. 版本与分支](#10-版本与分支)
 - [11. 贡献与许可](#11-贡献与许可)
-
-[English](./README.md) | [简体中文](./README.zh-CN.md)
 
 ## 1. 项目概述
 
