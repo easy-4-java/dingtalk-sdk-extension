@@ -2,7 +2,7 @@
 
 [English](./README.md) | [简体中文](./README.zh-CN.md)
 
-[![License](https://img.shields.io/badge/license-Apache%202.0-green)
+[![Java](https://img.shields.io/badge/Java-21-orange)](https://github.com/easy-4-java/dingtalk-sdk-extension) [![License](https://img.shields.io/badge/license-Apache%202.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 > Extension SDK for the DingTalk (钉钉) Open Platform: template-based operations for
 > robots, JSAPI, user, SNS login, SSO and account management, built on the official
