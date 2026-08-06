@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
+ * Copyright (c) 2018, Loong Wan (https://github.com/loong10k).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  * https://open-doc.dingtalk.com/microapp/serverapi2/eev437
  * https://blog.csdn.net/yangguosb/article/details/79762565
  * 
- * @author ： <a href="https://github.com/hiwepy">wandl</a>
+ * @author [@Loong Wan](https://github.com/loong10k)
  */
 @Slf4j
 public class DingTalkTemplate {
