@@ -15,13 +15,27 @@
  */
 package com.dingtalk.spring.boot.utils;
 
-
+/**
+ * Utility class for generating random alphanumeric strings.
+ * <p>Used to produce nonce strings required by DingTalk JSAPI signatures.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DingTalkUtils#sign(String, String, long, String)
+ */
 public class RandomUtils {
 
+  /** Character set for random string generation (a-z, A-Z, 0-9). */
   private static final String RANDOM_STR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+  /** Shared random number generator. */
   private static final java.util.Random RANDOM = new java.util.Random();
 
+  /**
+   * Generates a random 16-character alphanumeric string.
+   *
+   * @return a 16-character random string
+   */
   public static String getRandomStr() {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < 16; i++) {

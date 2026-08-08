@@ -5,8 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 	移动接入应用：扫码登录配置
+ * Configuration properties for mobile access applications
+ * (QR code login).
+ *
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.dingtalk.spring.boot.DingTalkConfigProvider#getDingTalkLoginProperties(String, String)
  */
 @Getter
 @Setter
@@ -14,11 +18,12 @@ import lombok.ToString;
 public class DingTalkLoginProperties {
 
 	/**
-	 * 	移动接入应用-扫码登录应用的appId
+	 * Application ID for the QR code login flow.
 	 */
 	private String appId;
+
 	/**
-	 * 	移动接入应用-扫码登录应用的appSecret
+	 * Application secret for the QR code login flow.
 	 */
 	private String appSecret;
 

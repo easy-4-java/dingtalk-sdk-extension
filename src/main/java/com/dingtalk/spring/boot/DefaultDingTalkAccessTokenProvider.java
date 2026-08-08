@@ -9,16 +9,32 @@ import com.dingtalk.api.response.OapiSnsGettokenResponse;
 import com.taobao.api.ApiException;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Default implementation of {@link DingTalkAccessTokenProvider} that calls
+ * the DingTalk Open API directly to obtain access tokens.
+ * <p>Application secrets are resolved via the {@link DingTalkConfigProvider}.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DingTalkAccessTokenProvider
+ * @see DingTalkConfigProvider
+ */
 public class DefaultDingTalkAccessTokenProvider implements DingTalkAccessTokenProvider {
 
     private final String DINGTALK_SERVICE = "https://oapi.dingtalk.com";
     private final String METHOD_GET = "GET";
     private final DingTalkConfigProvider dingTalkConfigProvider;
 
+    /**
+     * Constructs a provider with the given configuration provider.
+     *
+     * @param dingTalkConfigProvider  the configuration provider for resolving app secrets; must not be {@code null}
+     */
     public DefaultDingTalkAccessTokenProvider(DingTalkConfigProvider dingTalkConfigProvider) {
         this.dingTalkConfigProvider = dingTalkConfigProvider;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getAccessToken(String corpId, String appKey) throws ApiException {
 
@@ -39,6 +55,7 @@ public class DefaultDingTalkAccessTokenProvider implements DingTalkAccessTokenPr
         return null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getSnsAccessToken(String corpId, String appId) throws ApiException {
 
@@ -60,6 +77,5 @@ public class DefaultDingTalkAccessTokenProvider implements DingTalkAccessTokenPr
         return StringUtils.EMPTY;
 
     }
-
 
 }

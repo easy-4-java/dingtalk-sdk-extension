@@ -5,8 +5,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *	第三方个人应用：小程序配置
+ * Configuration properties for third-party personal mini applications.
+ * <p>Each personal application is assigned a unique appId and appSecret
+ * used to obtain user-authorized access tokens.</p>
+ *
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.dingtalk.spring.boot.DingTalkConfigProvider#getDingTalkPersonalMiniAppProperties(String, String)
  */
 @Getter
 @Setter
@@ -14,11 +19,12 @@ import lombok.ToString;
 public class DingTalkPersonalMiniAppProperties {
 
 	/**
-	 * 	AppId：每一个个人应用都会分配一个AppId，该AppId是个人应用开发过程中的唯一性标识，用来获取登录用户授权的access_token
+	 * Unique application ID for the personal mini app.
 	 */
 	private String appId;
+
 	/**
-	 * 	AppSecret：每一个个人应用都会分配一个AppSecret，AppSecret可用来获取登录用户授权的access_token
+	 * Application secret used to obtain user-authorized access tokens.
 	 */
 	private String appSecret;
 

@@ -23,12 +23,28 @@ import java.util.Formatter;
 import com.taobao.api.ApiException;
 
 /**
- * https://ding-doc.dingtalk.com/doc#/dev/uwa7vs
- * 
+ * Utility class for DingTalk JSAPI signature computation.
+ * <p>Implements the SHA-1 based signature algorithm required by the
+ * DingTalk JSAPI ticket verification flow.</p>
+ *
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see <a href="https://ding-doc.dingtalk.com/doc#/dev/uwa7vs">JSAPI signature documentation</a>
  */
 public class DingTalkUtils {
 
+	/**
+	 * Computes a SHA-1 signature for the given JSAPI ticket, nonce, timestamp, and URL.
+	 * <p>The signature plain text is formatted as:
+	 * {@code jsapi_ticket=<ticket>&noncestr=<nonce>&timestamp=<ts>&url=<url>}</p>
+	 *
+	 * @param jsapiTicket  the JSAPI ticket
+	 * @param nonceStr     the random nonce string
+	 * @param timeStamp    the Unix timestamp in seconds
+	 * @param url          the current page URL (without hash fragment)
+	 * @return the hexadecimal SHA-1 signature string
+	 * @throws ApiException if the SHA-1 algorithm or UTF-8 encoding is not available
+	 */
 	public static String sign(String jsapiTicket, String nonceStr, long timeStamp, String url) throws ApiException {
 		String plain = "jsapi_ticket=" + jsapiTicket + "&noncestr=" + nonceStr + "&timestamp=" + String.valueOf(timeStamp)
 				+ "&url=" + url;
@@ -44,7 +60,12 @@ public class DingTalkUtils {
 		}
 	}
 
-	// 字节数组转化成十六进制字符串
+	/**
+	 * Converts a byte array to a lowercase hexadecimal string.
+	 *
+	 * @param hash  the byte array to convert
+	 * @return the hexadecimal string representation
+	 */
 	private static String byteToHex(final byte[] hash) {
 		Formatter formatter = new Formatter();
 		for (byte b : hash) {
