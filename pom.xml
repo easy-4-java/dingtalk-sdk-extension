@@ -345,6 +345,7 @@
                 <maven-jacoco-plugin.version>0.8.15</maven-jacoco-plugin.version>
             
 		<dingtalk-service-sdk.version>2.0.0</dingtalk-service-sdk.version>
+        <maven-central-publishing-plugin.version>0.11.0</maven-central-publishing-plugin.version>
 		<commons-collections4.version>4.5.0</commons-collections4.version></properties>
         </profile>
         <!-- 发布到 Maven Central Portal：mvn -Prelease deploy（GPG 签名 + 源码 + Javadoc + Central 发布插件） -->
@@ -511,6 +512,7 @@
         <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
         <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
         <maven-nexus-staging-plugin.version>1.7.0</maven-nexus-staging-plugin.version>
+        <maven-central-publishing-plugin.version>0.11.0</maven-central-publishing-plugin.version>
     </properties>
 
     <!-- 依赖版本统一管理（dependencyManagement） -->
