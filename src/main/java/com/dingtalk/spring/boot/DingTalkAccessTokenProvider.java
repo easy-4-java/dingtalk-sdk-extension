@@ -2,24 +2,36 @@ package com.dingtalk.spring.boot;
 
 import com.taobao.api.ApiException;
 
+/**
+ * Strategy interface for obtaining DingTalk access tokens.
+ * <p>Implementations may cache tokens, refresh them automatically,
+ * or delegate to external token management services.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DefaultDingTalkAccessTokenProvider
+ * @see DingTalkTemplate#getAccessToken(String, String)
+ * @see <a href="https://open.dingtalk.com/document/isvapp-server/obtain-the-access_token-of-an-enterprise-s-internal-applications">Access token documentation</a>
+ */
 public interface DingTalkAccessTokenProvider {
 
     /**
-     * 根据corpId获取企业内部开发access_token
-     * https://open.dingtalk.com/document/isvapp-server/obtain-the-access_token-of-an-enterprise-s-internal-applications
-     * @param corpId  企业ID
-     * @param appKey    企业Id
-     * @return the AccessToken
-     * @throws ApiException if get AccessToken Exception
+     * Retrieves the enterprise internal application access token.
+     *
+     * @param corpId  the corporate ID
+     * @param appKey  the application key
+     * @return the access token
+     * @throws ApiException if the API request fails
      */
     String getAccessToken(String corpId, String appKey) throws ApiException;
 
     /**
-     * 获取钉钉开放应用的ACCESS_TOKEN
-     * @param corpId  企业ID
-     * @param appId   企业应用Id
-     * @return the AccessToken
-     * @throws ApiException if get AccessToken Exception
+     * Retrieves the SNS access token for an open application.
+     *
+     * @param corpId  the corporate ID
+     * @param appId   the application ID
+     * @return the SNS access token
+     * @throws ApiException if the API request fails
      */
     String getSnsAccessToken(String corpId, String appId) throws ApiException;
 

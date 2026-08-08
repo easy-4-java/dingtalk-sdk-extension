@@ -16,21 +16,32 @@
 package com.dingtalk.spring.boot.bean;
 
 /**
- * ActionCard消息是否隐藏头像枚举值
+ * Enumerates avatar visibility options for ActionCard messages.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see ActionCardMessage
  */
 public enum HideAvatarType {
 
     /**
-     * 发消息的时候，隐藏机器人头像
+     * Hide the robot avatar when sending the message.
      */
     HIDE("隐藏", "1"),
 
     /**
-     * 发消息的时候，显示机器人头像
+     * Show the robot avatar normally when sending the message.
      */
     UNHIDE("不隐藏，正常显示", "0");
+
+    /**
+     * Human-readable comment for this option.
+     */
     private String comment;
 
+    /**
+     * Numeric string value used by the DingTalk API.
+     */
     private String value;
 
     HideAvatarType(String comment, String value) {
@@ -38,13 +49,22 @@ public enum HideAvatarType {
         this.value = value;
     }
 
+    /**
+     * Returns the human-readable comment.
+     *
+     * @return the comment string
+     */
     public String getComment() {
         return comment;
     }
 
+    /**
+     * Returns the API numeric string value.
+     *
+     * @return the value string ("0" or "1")
+     */
     public String getValue() {
         return value;
     }
-
 
 }

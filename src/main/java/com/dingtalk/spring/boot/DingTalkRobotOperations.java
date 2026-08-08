@@ -38,13 +38,40 @@ import com.taobao.api.ApiException;
 import org.apache.commons.lang3.ArrayUtils;
 
 /**
+ * Operations for sending messages through DingTalk robot webhooks.
+ * <p>Supports text, link, markdown, action card, and feed card message types.
+ * Messages can be sent by corporate ID + robot ID (using configured webhook)
+ * or by an explicit webhook URL.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DingTalkOperations
+ * @see DingTalkTemplate#opsForRobot()
+ * @see TextMessage
+ * @see LinkMessage
+ * @see MarkdownMessage
+ * @see ActionCardMessage
+ * @see FeedCardMessage
  */
 public class DingTalkRobotOperations extends DingTalkOperations {
 
+	/**
+	 * Constructs robot operations with the given template.
+	 *
+	 * @param template the DingTalk template; must not be {@code null}
+	 */
 	public DingTalkRobotOperations(DingTalkTemplate template) {
 		super(template);
 	}
 
+	/**
+	 * Builds the webhook URL for the specified robot.
+	 *
+	 * @param corpId     the corporate ID
+	 * @param robotId    the robot ID
+	 * @param timestamp  the current timestamp in milliseconds
+	 * @return the fully-qualified webhook URL with access token and signature
+	 */
 	protected String getWebhook(String corpId, String robotId, Long timestamp) {
 		DingTalkRobotProperties poperties = template.getDingTalkConfigProvider().getDingTalkRobotProperties(corpId, robotId);
         StringBuilder serverUrl = new StringBuilder(PREFIX + "/robot/send?access_token=").append(poperties.getAccessToken());
@@ -53,6 +80,14 @@ public class DingTalkRobotOperations extends DingTalkOperations {
         return serverUrl.toString();
     }
 
+	/**
+	 * Retrieves the mobile phone number of a DingTalk user.
+	 *
+	 * @param access_token  the access token for API calls
+	 * @param userid        the DingTalk user ID
+	 * @param lang          the language for the response (e.g., "zh_CN")
+	 * @return the mobile phone number, or {@code null} on error
+	 */
     public String getUserMobile(String access_token, String userid,  String lang) {
         try {
             DingTalkClient client = new DefaultDingTalkClient(PREFIX + "/topapi/v2/user/get");
@@ -68,6 +103,12 @@ public class DingTalkRobotOperations extends DingTalkOperations {
         return null;
     }
 
+	/**
+	 * Builds an {@link OapiRobotSendRequest} from a {@link BaseMessage}.
+	 *
+	 * @param message the message to convert
+	 * @return the robot send request
+	 */
     OapiRobotSendRequest buidRequest(BaseMessage message){
 
 		OapiRobotSendRequest request = new OapiRobotSendRequest();
@@ -107,10 +148,28 @@ public class DingTalkRobotOperations extends DingTalkOperations {
 		return request;
     }
 
+	/**
+	 * Sends a message through the robot identified by corporate ID and robot ID.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param message  the message to send
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendMessage(String corpId, String robotId, BaseMessage message) throws ApiException {
 		return this.sendMessage(corpId, robotId, this.buidRequest(message));
 	}
 
+	/**
+	 * Sends a pre-built request through the robot identified by corporate ID and robot ID.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param request  the pre-built send request
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendMessage(String corpId, String robotId, OapiRobotSendRequest request) throws ApiException {
   		Long timestamp = System.currentTimeMillis();
   		DingTalkClient client = new DefaultDingTalkClient(this.getWebhook(corpId, robotId, timestamp));
@@ -118,136 +177,282 @@ public class DingTalkRobotOperations extends DingTalkOperations {
   		return client.execute(request);
   	}
 
-    /*
-     * 发送文本消息到钉钉
-     */
+	/**
+	 * Sends a text message object through the robot.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param message  the text message to send
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendTextMessage(String corpId, String robotId, TextMessage message) throws ApiException {
 		return this.sendMessage(corpId, robotId, this.buidRequest(message));
     }
 
-    /*
-     * 发送文本消息到钉钉
-     */
+	/**
+	 * Sends a plain text string through the robot.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param content  the text content
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendTextMessage(String corpId, String robotId, String content) throws ApiException {
         return this.sendMessage(corpId, robotId, new TextMessage(content));
     }
 
-    /*
-     * 发送文本消息到钉钉
-     */
+	/**
+	 * Sends a text message mentioning specific members by mobile number.
+	 *
+	 * @param corpId    the corporate ID
+	 * @param robotId   the robot ID
+	 * @param content   the text content
+	 * @param atMobiles mobile phone numbers of members to mention
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendTextMessage(String corpId, String robotId, String content, String[] atMobiles) throws ApiException {
         return this.sendMessage(corpId, robotId, new TextMessage(content, atMobiles));
     }
 
-    /*
-     * 发送文本消息到钉钉
-     */
+	/**
+	 * Sends a text message with an at-all flag.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param content  the text content
+	 * @param isAtAll  {@code true} to mention all group members
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendTextMessage(String corpId, String robotId, String content, boolean isAtAll) throws ApiException {
         return this.sendMessage(corpId, robotId, new TextMessage(content, isAtAll));
     }
 
-    /*
-     * 发送Link消息到钉钉
-     */
+	/**
+	 * Sends a link message object through the robot.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param message  the link message to send
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendLinkMessage(String corpId, String robotId, LinkMessage message) throws ApiException {
         return this.sendMessage(corpId, robotId, message);
     }
 
-    /*
-     * 发送Link消息到钉钉
-     */
+	/**
+	 * Sends a link message with title, text, and URL.
+	 *
+	 * @param corpId      the corporate ID
+	 * @param robotId     the robot ID
+	 * @param title       the link title
+	 * @param text        the link description
+	 * @param messageUrl  the target URL
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendLinkMessage(String corpId, String robotId, String title, String text, String messageUrl) throws ApiException {
         return this.sendMessage(corpId, robotId, new LinkMessage(title, text, messageUrl));
     }
 
-    /*
-     * 发送Link消息到钉钉
-     */
+	/**
+	 * Sends a link message with title, text, URL, and cover image.
+	 *
+	 * @param corpId      the corporate ID
+	 * @param robotId     the robot ID
+	 * @param title       the link title
+	 * @param text        the link description
+	 * @param messageUrl  the target URL
+	 * @param picUrl      the cover image URL
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendLinkMessage(String corpId, String robotId, String title, String text, String messageUrl, String picUrl) throws ApiException {
         return this.sendMessage(corpId, robotId, new LinkMessage(title, text, messageUrl, picUrl));
     }
 
-    /*
-     * 发送MarkDown消息到钉钉
-     */
+	/**
+	 * Sends a Markdown message object through the robot.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param message  the Markdown message to send
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendMarkdownMessage(String corpId, String robotId, MarkdownMessage message) throws ApiException {
         return this.sendMessage(corpId, robotId, message);
     }
 
-    /*
-     * 发送MarkDown消息到钉钉
-     */
+	/**
+	 * Sends a Markdown message with title and text.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param title    the message title
+	 * @param text     the Markdown-formatted body
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendMarkdownMessage(String corpId, String robotId, String title, String text) throws ApiException {
         return this.sendMessage(corpId, robotId, new MarkdownMessage(title, text));
     }
 
-    /*
-     * 发送MarkDown消息到钉钉
-     */
+	/**
+	 * Sends a Markdown message mentioning specific members by mobile number.
+	 *
+	 * @param corpId    the corporate ID
+	 * @param robotId   the robot ID
+	 * @param title     the message title
+	 * @param text      the Markdown-formatted body
+	 * @param atMobiles mobile phone numbers of members to mention
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendMarkdownMessage(String corpId, String robotId, String title, String text, String[] atMobiles) throws ApiException {
         return this.sendMessage(corpId, robotId, new MarkdownMessage(title, text, atMobiles));
     }
 
-    /*
-     * 发送MarkDown消息到钉钉
-     */
+	/**
+	 * Sends a Markdown message with an at-all flag.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param title    the message title
+	 * @param text     the Markdown-formatted body
+	 * @param isAtAll  {@code true} to mention all group members
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendMarkdownMessage(String corpId, String robotId, String title, String text, boolean isAtAll) throws ApiException {
         return this.sendMessage(corpId, robotId, new MarkdownMessage(title, text, isAtAll));
     }
 
-    /*
-     * 发送ActionCard消息到钉钉
-     */
+	/**
+	 * Sends an ActionCard message object through the robot.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param message  the ActionCard message to send
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendActionCardMessage(String corpId, String robotId, ActionCardMessage message) throws ApiException {
         return this.sendMessage(corpId, robotId, message);
     }
 
-    /*
-     * 发送ActionCard消息到钉钉
-     */
+	/**
+	 * Sends an ActionCard message with title and text.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param title    the message title
+	 * @param text     the Markdown-formatted body
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendActionCardMessage(String corpId, String robotId, String title, String text) throws ApiException {
         return this.sendMessage(corpId, robotId, new ActionCardMessage(title, text));
     }
 
-    /*
-     * 发送ActionCard消息到钉钉
-     */
+	/**
+	 * Sends an ActionCard message with avatar visibility control.
+	 *
+	 * @param corpId      the corporate ID
+	 * @param robotId     the robot ID
+	 * @param title       the message title
+	 * @param text        the Markdown-formatted body
+	 * @param hideAvatar  avatar visibility setting
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendActionCardMessage(String corpId, String robotId, String title, String text, HideAvatarType hideAvatar) throws ApiException {
         return this.sendMessage(corpId, robotId, new ActionCardMessage(title, text, hideAvatar));
     }
 
-    /*
-     * 发送ActionCard消息到钉钉
-     */
+	/**
+	 * Sends an ActionCard message with a single button.
+	 *
+	 * @param corpId   the corporate ID
+	 * @param robotId  the robot ID
+	 * @param title    the message title
+	 * @param text     the Markdown-formatted body
+	 * @param button   the action button
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendActionCardMessage(String corpId, String robotId, String title, String text, ActionCardButton button) throws ApiException {
         return this.sendMessage(corpId, robotId, new ActionCardMessage(title, text, button));
     }
 
-    /*
-     * 发送ActionCard消息到钉钉
-     */
+	/**
+	 * Sends an ActionCard message with avatar visibility and a single button.
+	 *
+	 * @param corpId      the corporate ID
+	 * @param robotId     the robot ID
+	 * @param title       the message title
+	 * @param text        the Markdown-formatted body
+	 * @param hideAvatar  avatar visibility setting
+	 * @param button      the action button
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendActionCardMessage(String corpId, String robotId, String title, String text, HideAvatarType hideAvatar, ActionCardButton button) throws ApiException {
         return this.sendMessage(corpId, robotId, new ActionCardMessage(title, text, hideAvatar, button));
     }
 
-    /*
-     * 发送FeedCard消息到钉钉
-     */
+	/**
+	 * Sends a FeedCard message object through the robot.
+	 *
+	 * @param corpId          the corporate ID
+	 * @param robotId         the robot ID
+	 * @param feedCardMessage the FeedCard message to send
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendFeedCardMessage(String corpId, String robotId, FeedCardMessage feedCardMessage) throws ApiException {
         return this.sendMessage(corpId, robotId, feedCardMessage);
     }
 
-    /*
-     * 发送FeedCard消息到钉钉
-     */
+	/**
+	 * Sends a FeedCard message built from a list of items.
+	 *
+	 * @param corpId        the corporate ID
+	 * @param robotId       the robot ID
+	 * @param feedCardItems the list of feed card items
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendFeedCardMessage(String corpId, String robotId, List<FeedCardMessageItem> feedCardItems) throws ApiException {
         return this.sendMessage(corpId, robotId, new FeedCardMessage(feedCardItems));
     }
 
+	/**
+	 * Sends a message by explicit webhook URL.
+	 *
+	 * @param webhook  the full webhook URL (including access_token parameter)
+	 * @param secret   the robot secret for signature computation
+	 * @param message  the message to send
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendMessageByUrl(String webhook, String secret, BaseMessage message) throws ApiException {
 		return this.sendMessageByUrl(webhook, secret, this.buidRequest(message));
 	}
 
+	/**
+	 * Sends a pre-built request by explicit webhook URL.
+	 *
+	 * @param webhook  the full webhook URL
+	 * @param secret   the robot secret for signature computation
+	 * @param request  the pre-built send request
+	 * @return the send response
+	 * @throws ApiException if the API request fails
+	 */
     public OapiRobotSendResponse sendMessageByUrl(String webhook, String secret, OapiRobotSendRequest request) throws ApiException {
 		Long timestamp = System.currentTimeMillis();
 

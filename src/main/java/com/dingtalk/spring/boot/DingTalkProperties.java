@@ -13,41 +13,55 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * DingTalk configuration properties
+ * Root configuration properties for DingTalk integration.
+ * <p>Contains the corporate ID, corporate secret, and lists of
+ * configuration for various application types (corporate apps,
+ * personal mini apps, suites, login apps, and robots).</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DefaultDingTalkConfigProvider
  */
 @Getter
 @Setter
 @ToString
 public class DingTalkProperties {
 
+	/** Configuration property prefix. */
 	public static final String PREFIX = "dingtalk";
 
 	/**
-	 * 企业的corpid
+	 * Corporate ID (corpId).
 	 */
 	private String corpId;
+
 	/**
-	 * 企业的密钥
+	 * Corporate secret.
 	 */
 	private String corpSecret;
+
 	/**
-	 * 企业内部开发：小程序、H5配置
+	 * Enterprise internal development: mini program and H5 configurations.
 	 */
 	private List<DingTalkCorpAppProperties> corpApps;
+
 	/**
-	 * 第三方个人应用：小程序配置
+	 * Third-party personal application: mini program configurations.
 	 */
 	private List<DingTalkPersonalMiniAppProperties> apps;
+
 	/**
-	 * 第三方企业应用：小程序、H5配置
+	 * Third-party enterprise application: mini program and H5 configurations.
 	 */
 	private List<DingTalkSuiteProperties> suites;
+
 	/**
-	 * 移动接入应用：扫码登录配置
+	 * Mobile access application: QR code login configurations.
 	 */
 	private List<DingTalkLoginProperties> logins;
+
 	/**
-	 * Dingtalk：机器人配置
+	 * DingTalk robot configurations.
 	 */
 	private List<DingTalkRobotProperties> robots;
 

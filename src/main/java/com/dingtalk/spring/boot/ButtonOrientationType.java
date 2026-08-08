@@ -15,22 +15,33 @@
  */
 package com.dingtalk.spring.boot.bean;
 
-
 /**
- * ActionCard消息按钮布局枚举值
+ * Enumerates button layout orientations for ActionCard messages.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see ActionCardMessage
  */
 public enum ButtonOrientationType {
+
     /**
-     * 水平布局
+     * Arrange buttons horizontally (side by side).
      */
     HORIZONTAL("水平布局", "1"),
+
     /**
-     * 垂直布局
+     * Arrange buttons vertically (stacked).
      */
     VERTICAL("垂直布局", "0");
 
+    /**
+     * Human-readable comment for this orientation.
+     */
     private String comment;
 
+    /**
+     * Numeric string value used by the DingTalk API.
+     */
     private String value;
 
     ButtonOrientationType(String comment, String value) {
@@ -38,10 +49,20 @@ public enum ButtonOrientationType {
         this.value = value;
     }
 
+    /**
+     * Returns the human-readable comment.
+     *
+     * @return the comment string
+     */
     public String getComment() {
         return comment;
     }
 
+    /**
+     * Returns the API numeric string value.
+     *
+     * @return the value string ("0" or "1")
+     */
     public String getValue() {
         return value;
     }
