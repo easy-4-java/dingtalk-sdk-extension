@@ -16,35 +16,52 @@
 package com.dingtalk.spring.boot.bean;
 
 /**
- * 链接消息类型
+ * A link message for DingTalk robot webhooks.
+ * <p>Contains a title, description text, target URL, and an optional
+ * cover image URL.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see BaseMessage
+ * @see MessageType#link
  */
 @SuppressWarnings("serial")
 public class LinkMessage extends BaseMessage {
 
     /**
-     * 消息简介
+     * Brief description of the link message.
      */
     private String text;
 
     /**
-     * 消息标题
+     * Title of the link message.
      */
     private String title;
 
     /**
-     * 封面图片URL
+     * URL of the cover image.
      */
     private String picUrl;
 
     /**
-     * 消息跳转URL
+     * URL to navigate to when the message is clicked.
      */
     private String messageUrl;
 
+    /**
+     * Constructs an empty link message.
+     */
     public LinkMessage() {
     	super(MessageType.link);
     }
 
+    /**
+     * Constructs a link message without a cover image.
+     *
+     * @param title       the message title
+     * @param text        the message description
+     * @param messageUrl  the target URL
+     */
     public LinkMessage(String title, String text, String messageUrl) {
     	super(MessageType.link);
         this.text = text;
@@ -52,6 +69,14 @@ public class LinkMessage extends BaseMessage {
         this.messageUrl = messageUrl;
     }
 
+    /**
+     * Constructs a link message with a cover image.
+     *
+     * @param title       the message title
+     * @param text        the message description
+     * @param messageUrl  the target URL
+     * @param picUrl      the cover image URL
+     */
     public LinkMessage(String title, String text, String messageUrl, String picUrl) {
     	super(MessageType.link);
         this.text = text;
@@ -60,36 +85,76 @@ public class LinkMessage extends BaseMessage {
         this.messageUrl = messageUrl;
     }
 
+    /**
+     * Returns the message description.
+     *
+     * @return the message text
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Sets the message description.
+     *
+     * @param text the message text to set
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Returns the message title.
+     *
+     * @return the title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets the message title.
+     *
+     * @param title the title to set
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Returns the cover image URL.
+     *
+     * @return the cover image URL, or {@code null}
+     */
     public String getPicUrl() {
         return picUrl;
     }
 
+    /**
+     * Sets the cover image URL.
+     *
+     * @param picUrl the cover image URL
+     */
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl;
     }
 
+    /**
+     * Returns the target URL.
+     *
+     * @return the target URL
+     */
     public String getMessageUrl() {
         return messageUrl;
     }
 
+    /**
+     * Sets the target URL.
+     *
+     * @param messageUrl the target URL to set
+     */
     public void setMessageUrl(String messageUrl) {
         this.messageUrl = messageUrl;
     }
-    
+
 }

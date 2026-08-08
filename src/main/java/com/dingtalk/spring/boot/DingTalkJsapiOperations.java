@@ -24,19 +24,36 @@ import com.dingtalk.spring.boot.utils.RandomUtils;
 import com.taobao.api.ApiException;
 
 /**
+ * Operations for DingTalk JSAPI ticket retrieval and signature creation.
+ * <p>Used to obtain JSAPI tickets and compute signatures required for
+ * front-end DingTalk JSAPI calls.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DingTalkOperations
+ * @see DingTalkTemplate#opsForJsapi()
+ * @see <a href="https://ding-doc.dingtalk.com/doc#/dev/uwa7vs">JSAPI signature documentation</a>
  */
 public class DingTalkJsapiOperations extends DingTalkOperations {
 
 	DefaultDingTalkClient client = new DefaultDingTalkClient(PREFIX + "/get_jsapi_ticket");
-	
+
+	/**
+	 * Constructs JSAPI operations with the given template.
+	 *
+	 * @param template the DingTalk template; must not be {@code null}
+	 */
 	public DingTalkJsapiOperations(DingTalkTemplate template) {
 		super(template);
 	}
 
-	/*
-	 * 获得ticket,不强制刷新ticket.
+	/**
+	 * Retrieves a JSAPI ticket (without forced refresh).
 	 *
-	 * @see #getTicket(TicketType, boolean)
+	 * @param type         the ticket type
+	 * @param accessToken  the access token for API calls
+	 * @return the JSAPI ticket response
+	 * @throws ApiException if the API request fails
 	 */
 	public OapiGetJsapiTicketResponse getTicket(TicketType type, String accessToken) throws ApiException {
 		OapiGetJsapiTicketRequest req = new OapiGetJsapiTicketRequest();
@@ -44,8 +61,17 @@ public class DingTalkJsapiOperations extends DingTalkOperations {
 		return client.execute(req, accessToken);
 	}
 
-	/*
-	 * 创建调用jsapi时所需要的签名. 详情请见：https://ding-doc.dingtalk.com/doc#/dev/uwa7vs
+	/**
+	 * Creates a JSAPI signature for the given URL and agent.
+	 * <p>The signature is computed using the JSAPI ticket, a random nonce,
+	 * and the current timestamp.</p>
+	 *
+	 * @param url          the current page URL (without hash fragment)
+	 * @param agentId      the application agent ID
+	 * @param accessToken  the access token for API calls
+	 * @return the computed {@link JsapiTicketSignature}
+	 * @throws ApiException if the API request fails
+	 * @see DingTalkUtils#sign(String, String, long, String)
 	 */
 	public JsapiTicketSignature createSignature(String url, String agentId, String accessToken)
 			throws ApiException {

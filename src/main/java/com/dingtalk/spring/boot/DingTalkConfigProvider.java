@@ -2,71 +2,102 @@ package com.dingtalk.spring.boot;
 
 import com.dingtalk.spring.boot.property.*;
 
+/**
+ * Strategy interface for providing DingTalk configuration.
+ * <p>Implementations supply configuration for corporate apps, personal mini apps,
+ * suites, login apps, and robots based on corporate ID and application identifiers.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DefaultDingTalkConfigProvider
+ * @see DingTalkProperties
+ */
 public interface DingTalkConfigProvider {
 
     /**
-     * 根据corpId获取所有的钉钉配置
-     * @param corpId  企业ID
-     * @return
+     * Returns the DingTalk properties for the given corporate ID.
+     *
+     * @param corpId  the corporate ID
+     * @return the DingTalk properties
      */
     DingTalkProperties getDingTalkProperties(String corpId);
 
     /**
-     * 根据corpId、agentId 获取企业内部开发：小程序、H5配置
-     * @param corpId  企业ID
-     * @param agentId 程序客户端ID
-     * @return
+     * Returns the corporate application properties for the given agent ID.
+     *
+     * @param corpId   the corporate ID
+     * @param agentId  the application agent ID
+     * @return the corporate app properties, or {@code null} if not found
      */
     DingTalkCorpAppProperties getDingTalkCorpAppProperties(String corpId, String agentId);
 
     /**
-     * 根据 corpId、appId 获取第三方个人应用：小程序配置
-     * @param corpId  企业ID
-     * @param appId   应用Id
-     * @return
+     * Returns the personal mini app properties for the given application ID.
+     *
+     * @param corpId  the corporate ID
+     * @param appId   the application ID
+     * @return the personal mini app properties, or {@code null} if not found
      */
     DingTalkPersonalMiniAppProperties getDingTalkPersonalMiniAppProperties(String corpId, String appId);
 
     /**
-     * 根据 corpId、suiteId 获取第三方企业应用：小程序、H5配置
-     * @param corpId  企业ID
-     * @param suiteId 程序客户端ID
-     * @return
+     * Returns the suite properties for the given suite ID.
+     *
+     * @param corpId   the corporate ID
+     * @param suiteId  the suite ID
+     * @return the suite properties, or {@code null} if not found
      */
     DingTalkSuiteProperties getDingTalkSuiteProperties(String corpId, String suiteId);
 
     /**
-     * 根据 corpId、appId 获取钉钉扫码登录配置
-     * @param corpId  企业ID
-     * @param appId   应用Id
-     * @return
+     * Returns the login properties for the given application ID.
+     *
+     * @param corpId  the corporate ID
+     * @param appId   the application ID
+     * @return the login properties, or {@code null} if not found
      */
     DingTalkLoginProperties getDingTalkLoginProperties(String corpId, String appId);
 
     /**
-     * 根据 corpId、appId 获取钉钉机器人配置
-     * @param corpId  企业ID
-     * @param robotId 机器人ID
-     * @return
+     * Returns the robot properties for the given robot ID.
+     *
+     * @param corpId   the corporate ID
+     * @param robotId  the robot ID
+     * @return the robot properties, or {@code null} if not found
      */
     DingTalkRobotProperties getDingTalkRobotProperties(String corpId, String robotId);
 
+    /**
+     * Checks whether the given application key is registered.
+     *
+     * @param appKey  the application key
+     * @return {@code true} if the key is known
+     */
     boolean hasAppKey(String appKey);
 
     /**
-     * 通过应用Key或Id获取corpId
-     * @param appKey 应用Key或Id
-     * @return 企业的corpId
+     * Returns the corporate ID for the given application key.
+     *
+     * @param appKey  the application key or ID
+     * @return the corporate ID
      */
     String getCorpId(String appKey);
 
     /**
-     * 企业的密钥
-     * @param corpId  企业ID
-     * @return 企业的密钥
+     * Returns the corporate secret for the given corporate ID.
+     *
+     * @param corpId  the corporate ID
+     * @return the corporate secret
      */
     String getCorpSecret(String corpId);
 
+    /**
+     * Returns the application secret for the given corporate ID and application key.
+     *
+     * @param corpId  the corporate ID
+     * @param appKey  the application key
+     * @return the application secret
+     */
     String getAppSecret(String corpId, String appKey);
 
 }

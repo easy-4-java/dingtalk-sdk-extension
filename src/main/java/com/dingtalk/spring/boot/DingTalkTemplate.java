@@ -25,18 +25,29 @@ import com.taobao.api.ApiException;
 
 import lombok.extern.slf4j.Slf4j;
 
-/*
- * https://open-doc.dingtalk.com/microapp/serverapi2/eev437
- * https://blog.csdn.net/yangguosb/article/details/79762565
- * 
+/**
+ * Central entry point for interacting with the DingTalk Open API.
+ * <p>This template manages configuration, access tokens, and exposes
+ * operation facades for account, SNS, SSO, JSAPI, robot, and user
+ * operations.</p>
+ *
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DingTalkConfigProvider
+ * @see DingTalkAccessTokenProvider
+ * @see DingTalkAccountOperations
+ * @see DingTalkSnsOperations
+ * @see DingTalkSsoOperations
+ * @see DingTalkJsapiOperations
+ * @see DingTalkRobotOperations
+ * @see DingTalkUserOperations
  */
 @Slf4j
 public class DingTalkTemplate {
 
 	private final DingTalkConfigProvider dingTalkConfigProvider;
 	private final DingTalkAccessTokenProvider dingTalkAccessTokenProvider;
-	
+
 	private final DingTalkAccountOperations accountOps = new DingTalkAccountOperations(this);
 	private final DingTalkSnsOperations snsOps = new DingTalkSnsOperations(this);
 	private final DingTalkSsoOperations ssoOps = new DingTalkSsoOperations(this);
@@ -44,74 +55,92 @@ public class DingTalkTemplate {
 	private final DingTalkRobotOperations robotOps = new DingTalkRobotOperations(this);
 	private final DingTalkUserOperations userOps = new DingTalkUserOperations(this);
 
+	/**
+	 * Constructs a new DingTalk template with the given providers.
+	 *
+	 * @param dingTalkConfigProvider       the configuration provider; must not be {@code null}
+	 * @param dingTalkAccessTokenProvider  the access token provider; must not be {@code null}
+	 */
 	public DingTalkTemplate(DingTalkConfigProvider dingTalkConfigProvider, DingTalkAccessTokenProvider dingTalkAccessTokenProvider) {
 		this.dingTalkConfigProvider = dingTalkConfigProvider;
 		this.dingTalkAccessTokenProvider = dingTalkAccessTokenProvider;
 	}
 
+	/**
+	 * Checks whether the given application key is registered.
+	 *
+	 * @param appKey the application key or ID
+	 * @return {@code true} if the app key is known
+	 */
 	public boolean hasAppKey(String appKey) {
 		return dingTalkConfigProvider.hasAppKey(appKey);
 	}
 
 	/**
-	 * 通过应用Key或Id获取corpId
-	 * @param appKey 应用Key或Id
-	 * @return 企业corpId
+	 * Returns the corporate ID for the given application key.
+	 *
+	 * @param appKey the application key or ID
+	 * @return the corporate ID
 	 */
 	public String getCorpId(String appKey){
 		return dingTalkConfigProvider.getCorpId(appKey);
 	}
 
 	/**
-	 * 企业的密钥
-	 * @param corpId  企业ID
-	 * @return 企业的密钥
+	 * Returns the corporate secret for the given corporate ID.
+	 *
+	 * @param corpId the corporate ID
+	 * @return the corporate secret
 	 */
 	public String getCorpSecret(String corpId){
 		return dingTalkConfigProvider.getCorpSecret(corpId);
 	}
 
 	/**
-	 * 应用密钥
-	 * @param corpId  企业ID
-	 * @param appKey 应用Key或Id
-	 * @return 应用密钥
+	 * Returns the application secret for the given corporate ID and application key.
+	 *
+	 * @param corpId  the corporate ID
+	 * @param appKey  the application key or ID
+	 * @return the application secret
 	 */
 	public String getAppSecret(String corpId, String appKey) {
 		return dingTalkConfigProvider.getAppSecret(corpId, appKey);
 	}
 
 	/**
-	 * 企业内部开发获取access_token 先从缓存查，再到钉钉查
-	 * https://open-doc.dingtalk.com/microapp/serverapi2/eev437
-	 * @param corpId  企业ID
-	 * @param appKey   企业应用Key
-	 * @return the AccessToken
-	 * @throws ApiException if get AccessToken Exception
+	 * Retrieves the enterprise internal access token.
+	 *
+	 * @param corpId  the corporate ID
+	 * @param appKey  the application key
+	 * @return the access token
+	 * @throws ApiException if the API request fails
+	 * @see <a href="https://open-doc.dingtalk.com/microapp/serverapi2/eev437">DingTalk documentation</a>
 	 */
 	public String getAccessToken(String corpId, String appKey) throws ApiException {
 		return dingTalkAccessTokenProvider.getAccessToken(corpId, appKey);
 	}
-	
+
 	/**
-	 * 获取钉钉开放应用的ACCESS_TOKEN
-	 * @param corpId  企业ID
-	 * @param appId   企业应用Id
-	 * @return the AccessToken
-	 * @throws ApiException if get AccessToken Exception
+	 * Retrieves the SNS access token for an open application.
+	 *
+	 * @param corpId  the corporate ID
+	 * @param appId   the application ID
+	 * @return the SNS access token
+	 * @throws ApiException if the API request fails
 	 */
 	public String getSnsAccessToken(String corpId, String appId) throws ApiException {
 		return dingTalkAccessTokenProvider.getSnsAccessToken(corpId, appId);
 	}
-	
+
 	/**
-     * 计算签名
-     * 参考：https://ding-doc.dingtalk.com/doc#/serverapi2/qf2nxq/9e91d73c
-     *
-     * @param secret    密钥，机器人安全设置页面，加签一栏下面显示的SEC开头的字符
-     * @param timestamp 当前时间戳，毫秒级单位
-     * @return 根据时间戳计算后的签名信息
-     */
+	 * Computes an HMAC-SHA256 signature for the given secret and timestamp.
+	 * <p>The signature is URL-encoded and Base64-encoded before being returned.</p>
+	 *
+	 * @param secret    the robot secret token (SEC-prefixed)
+	 * @param timestamp the current timestamp in milliseconds
+	 * @return the URL-encoded signature string, or {@code null} on error
+	 * @see <a href="https://ding-doc.dingtalk.com/doc#/serverapi2/qf2nxq/9e91d73c">DingTalk signature documentation</a>
+	 */
 	public String getSign(String secret, Long timestamp) {
         try {
             String stringToSign = timestamp + "\n" + secret;
@@ -119,42 +148,82 @@ public class DingTalkTemplate {
             mac.init(new SecretKeySpec(secret.getBytes("UTF-8"), "HmacSHA256"));
             byte[] signData = mac.doFinal(stringToSign.getBytes("UTF-8"));
             String sign = URLEncoder.encode(new String(Base64.getEncoder().encode(signData)), "UTF-8");
-            log.debug("【发送钉钉群消息】获取到签名sign = {}", sign);
+            log.debug("Signature computed: sign = {}", sign);
             return sign;
         } catch (Exception e) {
-            log.error("【发送钉钉群消息】计算签名异常，errMsg = {}", e);
+            log.error("Failed to compute signature: errMsg = {}", e);
             return null;
         }
     }
 
+	/**
+	 * Returns the account operations facade.
+	 *
+	 * @return the {@link DingTalkAccountOperations} instance
+	 */
 	public DingTalkAccountOperations opsForAccount() {
 		return accountOps;
 	}
 
+	/**
+	 * Returns the SNS operations facade.
+	 *
+	 * @return the {@link DingTalkSnsOperations} instance
+	 */
 	public DingTalkSnsOperations opsForSns() {
 		return snsOps;
 	}
-	
+
+	/**
+	 * Returns the SSO operations facade.
+	 *
+	 * @return the {@link DingTalkSsoOperations} instance
+	 */
 	public DingTalkSsoOperations opsForSso() {
 		return ssoOps;
 	}
-	
+
+	/**
+	 * Returns the JSAPI operations facade.
+	 *
+	 * @return the {@link DingTalkJsapiOperations} instance
+	 */
 	public DingTalkJsapiOperations opsForJsapi() {
 		return jsapiOps;
 	}
-	
+
+	/**
+	 * Returns the robot operations facade.
+	 *
+	 * @return the {@link DingTalkRobotOperations} instance
+	 */
 	public DingTalkRobotOperations opsForRobot() {
 		return robotOps;
 	}
 
+	/**
+	 * Returns the user operations facade.
+	 *
+	 * @return the {@link DingTalkUserOperations} instance
+	 */
 	public DingTalkUserOperations opsForUser() {
 		return userOps;
 	}
 
+	/**
+	 * Returns the access token provider.
+	 *
+	 * @return the {@link DingTalkAccessTokenProvider} instance
+	 */
 	public DingTalkAccessTokenProvider getDingTalkAccessTokenProvider() {
 		return dingTalkAccessTokenProvider;
 	}
 
+	/**
+	 * Returns the configuration provider.
+	 *
+	 * @return the {@link DingTalkConfigProvider} instance
+	 */
 	public DingTalkConfigProvider getDingTalkConfigProvider() {
 		return dingTalkConfigProvider;
 	}

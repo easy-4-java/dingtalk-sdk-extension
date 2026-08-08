@@ -16,28 +16,49 @@
 package com.dingtalk.spring.boot.bean;
 
 /**
- * 跳转卡片中的按钮实体类
+ * Represents a button in a DingTalk ActionCard message.
+ * <p>Each button has a display title and an action URL that is
+ * opened when the user clicks the button.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see ActionCardMessage
  */
 public class ActionCardButton {
 
     /**
-     * 按钮标题
+     * Display title of the button.
      */
     private String title;
 
     /**
-     * 实际点击时调用的URL
+     * URL to navigate to when the button is clicked.
      */
     private String actionURL;
 
+    /**
+     * Constructs an empty action card button.
+     */
     public ActionCardButton() {
     }
 
+    /**
+     * Constructs an action card button with the given title and URL.
+     *
+     * @param title      the button display title
+     * @param actionURL  the URL to open on click
+     */
     public ActionCardButton(String title, String actionURL) {
         this.title = title;
         this.actionURL = actionURL;
     }
 
+    /**
+     * Creates a default "Read More" button with the specified URL.
+     *
+     * @param actionURL  the URL to open when the button is clicked
+     * @return a new {@link ActionCardButton} with title "阅读全文"
+     */
     public static ActionCardButton defaultReadButton(String actionURL) {
         ActionCardButton button = new ActionCardButton();
         button.setTitle("阅读全文");
@@ -45,18 +66,38 @@ public class ActionCardButton {
         return button;
     }
 
+    /**
+     * Returns the button display title.
+     *
+     * @return the title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets the button display title.
+     *
+     * @param title the title to set
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Returns the action URL.
+     *
+     * @return the action URL
+     */
     public String getActionURL() {
         return actionURL;
     }
 
+    /**
+     * Sets the action URL.
+     *
+     * @param actionURL the URL to set
+     */
     public void setActionURL(String actionURL) {
         this.actionURL = actionURL;
     }

@@ -22,6 +22,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents the signature data required for DingTalk JSAPI calls.
+ * <p>This bean holds the agent ID, target URL, nonce string, timestamp,
+ * corporate ID, and the computed signature used to authenticate JSAPI requests.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.dingtalk.spring.boot.DingTalkJsapiOperations
+ */
 @Data
 @Builder
 @NoArgsConstructor
