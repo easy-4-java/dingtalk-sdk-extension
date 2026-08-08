@@ -2,22 +2,40 @@ package com.dingtalk.spring.boot;
 
 import com.dingtalk.spring.boot.property.*;
 import org.apache.commons.lang3.StringUtils;
-// Spring removed for SDK purity
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Default implementation of {@link DingTalkConfigProvider} backed by {@link DingTalkProperties}.
+ * <p>On {@link #init()}, application keys and secrets from all configured property lists
+ * are indexed into a {@link ConcurrentHashMap} for fast lookup.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DingTalkConfigProvider
+ * @see DingTalkProperties
+ */
 public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
 
     private final DingTalkProperties dingTalkProperties;
     private Map<String, String> appKeySecret = new ConcurrentHashMap<>();
 
+    /**
+     * Constructs a provider with the given properties.
+     *
+     * @param dingTalkProperties  the DingTalk configuration properties; must not be {@code null}
+     */
     public DefaultDingTalkConfigProvider(DingTalkProperties dingTalkProperties) {
         this.dingTalkProperties = dingTalkProperties;
     }
 
+    /**
+     * Initializes the internal app-key-to-secret mapping from all configured property lists.
+     * <p>Must be called once after construction and before using lookup methods.</p>
+     */
     public void init() {
 
         if(!CollectionUtils.isEmpty(this.dingTalkProperties.getCorpApps())) {
@@ -43,11 +61,13 @@ public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
 
     }
 
+    /** {@inheritDoc} */
     @Override
     public DingTalkProperties getDingTalkProperties(String corpId) {
         return dingTalkProperties;
     }
 
+    /** {@inheritDoc} */
     @Override
     public DingTalkCorpAppProperties getDingTalkCorpAppProperties(String corpId, String agentId) {
         if(CollectionUtils.isEmpty(dingTalkProperties.getCorpApps())){
@@ -58,6 +78,7 @@ public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
         return optional.isPresent() ? optional.get() : null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public DingTalkPersonalMiniAppProperties getDingTalkPersonalMiniAppProperties(String corpId, String appId) {
         if(CollectionUtils.isEmpty(dingTalkProperties.getApps())){
@@ -68,6 +89,7 @@ public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
         return optional.isPresent() ? optional.get() : null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public DingTalkSuiteProperties getDingTalkSuiteProperties(String corpId, String suiteId) {
         if(CollectionUtils.isEmpty(dingTalkProperties.getSuites())){
@@ -78,6 +100,7 @@ public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
         return optional.isPresent() ? optional.get() : null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public DingTalkLoginProperties getDingTalkLoginProperties(String corpId, String appId) {
         if(CollectionUtils.isEmpty(dingTalkProperties.getLogins())){
@@ -88,6 +111,7 @@ public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
         return optional.isPresent() ? optional.get() : null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public DingTalkRobotProperties getDingTalkRobotProperties(String corpId, String robotId) {
         if(CollectionUtils.isEmpty(dingTalkProperties.getRobots())){
@@ -98,21 +122,25 @@ public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
         return optional.isPresent() ? optional.get() : null;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean hasAppKey(String appKey) {
         return appKeySecret.containsKey(appKey);
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCorpId(String appKey) {
         return dingTalkProperties.getCorpId();
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getCorpSecret(String corpId) {
         return dingTalkProperties.getCorpSecret();
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getAppSecret(String corpId, String appKey) {
         String appSecret = appKeySecret.get(appKey);

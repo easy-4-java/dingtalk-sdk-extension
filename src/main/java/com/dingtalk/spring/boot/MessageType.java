@@ -16,32 +16,36 @@
 package com.dingtalk.spring.boot.bean;
 
 /**
- * 定义消息类型，目前有文本、链接、MarkDown、跳转卡片、消息卡片五种枚举值
+ * Enumerates the supported DingTalk message types.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see BaseMessage
  */
 public enum MessageType {
 
     /**
-     * 文本类型
+     * Plain text message type.
      */
     text,
 
     /**
-     * 链接类型
+     * Link message type.
      */
     link,
 
     /**
-     * MarkDown类型
+     * Markdown-formatted message type.
      */
     markdown,
 
     /**
-     * 跳转卡片类型
+     * ActionCard (jump card) message type.
      */
     actionCard,
 
     /**
-     * 消息卡片类型
+     * FeedCard (message card) message type.
      */
     feedCard;
 }

@@ -18,27 +18,53 @@ package com.dingtalk.spring.boot.bean;
 import java.io.Serializable;
 
 /**
- * 请求消息的抽象类
+ * Abstract base class for all DingTalk message types.
+ * <p>Every concrete message (text, link, markdown, action card, feed card)
+ * extends this class and carries a {@link MessageType} discriminator.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see MessageType
+ * @see TextMessage
+ * @see LinkMessage
+ * @see MarkdownMessage
+ * @see ActionCardMessage
+ * @see FeedCardMessage
  */
 @SuppressWarnings("serial")
 public abstract class BaseMessage implements Serializable {
 
     /**
-     * 消息类型
+     * The message type discriminator.
      */
     protected MessageType msgtype;
 
+    /**
+     * Constructs a new base message with the given type.
+     *
+     * @param msgtype the message type; must not be {@code null}
+     */
 	public BaseMessage(MessageType msgtype) {
 		super();
 		this.msgtype = msgtype;
 	}
 
+    /**
+     * Returns the message type.
+     *
+     * @return the message type, never {@code null}
+     */
 	public MessageType getMsgtype() {
 		return msgtype;
 	}
 
+    /**
+     * Sets the message type.
+     *
+     * @param msgtype the message type to set; must not be {@code null}
+     */
 	public void setMsgtype(MessageType msgtype) {
 		this.msgtype = msgtype;
 	}
-	
+
 }

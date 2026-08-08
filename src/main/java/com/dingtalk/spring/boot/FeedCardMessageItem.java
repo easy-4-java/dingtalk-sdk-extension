@@ -16,54 +16,99 @@
 package com.dingtalk.spring.boot.bean;
 
 /**
- * 消息卡片中的明细条目
+ * Represents a single item within a DingTalk FeedCard message.
+ * <p>Each item has a title, a target URL, and a cover image URL.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see FeedCardMessage
  */
 public class FeedCardMessageItem {
 
     /**
-     * 标题
+     * Item title.
      */
     private String title;
 
     /**
-     * 消息跳转URL
+     * URL to navigate to when the item is clicked.
      */
     private String messageURL;
 
     /**
-     * 封面图片URL
+     * URL of the cover image.
      */
     private String picURL;
 
+    /**
+     * Constructs an empty FeedCard message item.
+     */
     public FeedCardMessageItem() {
     }
 
+    /**
+     * Constructs a FeedCard message item with all fields.
+     *
+     * @param title       the item title
+     * @param messageURL  the target URL
+     * @param picURL      the cover image URL
+     */
     public FeedCardMessageItem(String title, String messageURL, String picURL) {
         this.title = title;
         this.messageURL = messageURL;
         this.picURL = picURL;
     }
 
+    /**
+     * Returns the item title.
+     *
+     * @return the title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets the item title.
+     *
+     * @param title the title to set
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Returns the target URL.
+     *
+     * @return the message URL
+     */
     public String getMessageURL() {
         return messageURL;
     }
 
+    /**
+     * Sets the target URL.
+     *
+     * @param messageURL the message URL to set
+     */
     public void setMessageURL(String messageURL) {
         this.messageURL = messageURL;
     }
 
+    /**
+     * Returns the cover image URL.
+     *
+     * @return the picture URL
+     */
     public String getPicURL() {
         return picURL;
     }
 
+    /**
+     * Sets the cover image URL.
+     *
+     * @param picURL the picture URL to set
+     */
     public void setPicURL(String picURL) {
         this.picURL = picURL;
     }

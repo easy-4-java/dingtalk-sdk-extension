@@ -5,8 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- *	 企业内部开发：小程序、H5配置
+ * Configuration properties for enterprise internal development applications
+ * (mini programs and H5 apps).
+ *
  * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see com.dingtalk.spring.boot.DingTalkConfigProvider#getDingTalkCorpAppProperties(String, String)
  */
 @Getter
 @Setter
@@ -14,15 +18,17 @@ import lombok.ToString;
 public class DingTalkCorpAppProperties {
 
 	/**
-	 * 	企业内部开发：程序客户端ID
+	 * Application agent ID for enterprise internal development.
 	 */
 	private String agentId;
+
 	/**
-	 * 	企业内部开发：应用的唯一标识key
+	 * Unique application key for enterprise internal development.
 	 */
 	private String appKey;
+
 	/**
-	 * 	企业内部开发：应用的密钥
+	 * Application secret for enterprise internal development.
 	 */
 	private String appSecret;
 

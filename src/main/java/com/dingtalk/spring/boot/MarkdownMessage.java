@@ -16,42 +16,64 @@
 package com.dingtalk.spring.boot.bean;
 
 /**
- * 文本请求消息
+ * A Markdown-formatted message for DingTalk robot webhooks.
+ * <p>The message body supports standard Markdown syntax.
+ * Members can be mentioned by mobile number or all at once.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see BaseMessage
+ * @see MessageType#markdown
  */
 @SuppressWarnings("serial")
 public class MarkdownMessage extends BaseMessage {
 
 	/**
-     * 消息简介
+     * Brief description of the message.
      */
     private String text;
 
     /**
-     * 消息标题
+     * Title of the message.
      */
     private String title;
 
     /**
-     * 可以通过群成员的绑定手机号来艾特具体的群成员
+     * Mobile phone numbers of group members to mention.
      */
     private String[] atMobiles;
 
     /**
-     * 是否艾特所有人
-     * 也可以设置isAtAll=true来艾特所有人
+     * Whether to mention all group members.
      */
     private boolean isAtAll;
 
+    /**
+     * Constructs an empty Markdown message.
+     */
 	public MarkdownMessage() {
 		super(MessageType.markdown);
 	}
 
+	/**
+	 * Constructs a Markdown message with title and text.
+	 *
+	 * @param title  the message title
+	 * @param text   the Markdown-formatted body
+	 */
 	public MarkdownMessage(String title, String text) {
 		super(MessageType.markdown);
 		this.text = text;
 		this.title = title;
 	}
 
+	/**
+	 * Constructs a Markdown message that mentions specific members by mobile number.
+	 *
+	 * @param title      the message title
+	 * @param text       the Markdown-formatted body
+	 * @param atMobiles  mobile phone numbers of members to mention
+	 */
 	public MarkdownMessage(String title, String text, String[] atMobiles) {
 		super(MessageType.markdown);
 		this.text = text;
@@ -59,6 +81,13 @@ public class MarkdownMessage extends BaseMessage {
 		this.atMobiles = atMobiles;
 	}
 
+	/**
+	 * Constructs a Markdown message with an at-all flag.
+	 *
+	 * @param title    the message title
+	 * @param text     the Markdown-formatted body
+	 * @param isAtAll  {@code true} to mention all group members
+	 */
 	public MarkdownMessage(String title, String text, boolean isAtAll) {
 		super(MessageType.markdown);
 		this.text = text;
@@ -66,34 +95,74 @@ public class MarkdownMessage extends BaseMessage {
 		this.isAtAll = isAtAll;
 	}
 
+	/**
+	 * Returns the message title.
+	 *
+	 * @return the title
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Sets the message title.
+	 *
+	 * @param title the title to set
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * Returns the Markdown-formatted body.
+	 *
+	 * @return the message text
+	 */
 	public String getText() {
 		return text;
 	}
 
+	/**
+	 * Sets the Markdown-formatted body.
+	 *
+	 * @param text the message text to set
+	 */
 	public void setText(String text) {
 		this.text = text;
 	}
 
+	/**
+	 * Returns the mobile phone numbers of members to mention.
+	 *
+	 * @return array of mobile phone numbers, or {@code null}
+	 */
 	public String[] getAtMobiles() {
 		return atMobiles;
 	}
 
+	/**
+	 * Sets the mobile phone numbers of members to mention.
+	 *
+	 * @param atMobiles array of mobile phone numbers
+	 */
 	public void setAtMobiles(String[] atMobiles) {
 		this.atMobiles = atMobiles;
 	}
 
+	/**
+	 * Returns whether all group members should be mentioned.
+	 *
+	 * @return {@code true} if all members are mentioned
+	 */
 	public boolean getIsAtAll() {
 		return isAtAll;
 	}
 
+	/**
+	 * Sets whether all group members should be mentioned.
+	 *
+	 * @param isAtAll {@code true} to mention all members
+	 */
 	public void setIsAtAll(boolean isAtAll) {
 		this.isAtAll = isAtAll;
 	}

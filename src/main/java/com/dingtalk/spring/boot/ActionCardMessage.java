@@ -19,69 +19,87 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 跳转卡片类型
+ * An ActionCard message for DingTalk robot webhooks.
+ * <p>ActionCard messages support a title, Markdown-formatted body,
+ * avatar visibility control, button orientation, and up to five
+ * action buttons. The DingTalk SDK officially supports up to 5 buttons;
+ * this limit is enforced by {@link #addButton(ActionCardButton)}.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see BaseMessage
+ * @see ActionCardButton
+ * @see MessageType#actionCard
  */
 @SuppressWarnings("serial")
 public class ActionCardMessage extends BaseMessage {
 
     /**
-     * 钉钉官网给的SDK上的按钮最多5个，最少1个。
-     * 但是经过实际测试(PS.只测试到30个，后续未测)，按钮理论上可以为0到无限多个。
-     * 当按钮数目超过2两个时，手机端按钮一定是垂直排列，PC端则可以保持设定的排列方式进行排列。
-     * 当按钮数目过多时，无论是PC端还是手机端，排列布局对用户来说都不是很友好，
-     * 故为了美观考虑，我们这里的最大值和最小值分别设置为5和0
+     * Maximum number of buttons recommended (DingTalk SDK guideline).
      */
     private static final int MAX_BUTTON_COUNT = 5;
+
+    /**
+     * Minimum number of buttons.
+     */
     private static final int MIN_BUTTON_COUNT = 0;
 
     /**
-     * 标题
+     * Message title.
      */
     private String title;
 
     /**
-     * 正文，支持MarkDown语法
+     * Message body, supports Markdown syntax.
      */
     private String text;
 
     /**
-     * 是否隐藏头像
-     * 0 - 不隐藏头像
-     * 1 - 隐藏头像
+     * Whether to hide the robot avatar when sending the message.
      */
     private HideAvatarType hideAvatar = HideAvatarType.UNHIDE;
 
     /**
-     * 按钮排列方式
-     * 0 - 垂直排列
-     * 1 - 水平排列
+     * Button layout orientation.
      */
     private ButtonOrientationType btnOrientation = ButtonOrientationType.HORIZONTAL;
 
     /**
-     * 是否为按钮跳转布局，默认为false。
-     * 但只在Button个数为1时，分辨布局方式起作用。
-     * true - 使用独立跳转ActionCard发消息
-     * false - 使用整体跳转ActionCard发消息
+     * Whether to use independent jump layout (only effective when there is exactly one button).
      */
     private boolean isButtonView;
 
     /**
-     * 操作按钮成员变量
-     * 这个成员变量没有Set方法，主要是为了防止按钮过多造成的较差体验
+     * List of action buttons (max 5 recommended).
      */
     private List<ActionCardButton> buttons = new ArrayList<>();
 
+    /**
+     * Constructs an empty ActionCard message.
+     */
     public ActionCardMessage() {
     	super(MessageType.actionCard);
     }
 
+    /**
+     * Constructs an ActionCard message with title and text.
+     *
+     * @param title  the message title
+     * @param text   the Markdown-formatted body
+     */
     public ActionCardMessage(String title, String text) {
     	super(MessageType.actionCard);
         this.title = title;
         this.text = text;
     }
 
+    /**
+     * Constructs an ActionCard message with avatar visibility.
+     *
+     * @param title       the message title
+     * @param text        the Markdown-formatted body
+     * @param hideAvatar  avatar visibility setting
+     */
     public ActionCardMessage(String title, String text, HideAvatarType hideAvatar) {
     	super(MessageType.actionCard);
         this.title = title;
@@ -89,6 +107,13 @@ public class ActionCardMessage extends BaseMessage {
         this.hideAvatar = hideAvatar;
     }
 
+    /**
+     * Constructs an ActionCard message with a single button.
+     *
+     * @param title   the message title
+     * @param text    the Markdown-formatted body
+     * @param button  the action button to add
+     */
     public ActionCardMessage(String title, String text, ActionCardButton button) {
     	super(MessageType.actionCard);
         this.title = title;
@@ -96,6 +121,14 @@ public class ActionCardMessage extends BaseMessage {
         this.buttons.add(button);
     }
 
+    /**
+     * Constructs an ActionCard message with avatar visibility and a single button.
+     *
+     * @param title       the message title
+     * @param text        the Markdown-formatted body
+     * @param hideAvatar  avatar visibility setting
+     * @param button      the action button to add
+     */
     public ActionCardMessage(String title, String text, HideAvatarType hideAvatar, ActionCardButton button) {
     	super(MessageType.actionCard);
         this.title = title;
@@ -103,11 +136,12 @@ public class ActionCardMessage extends BaseMessage {
         this.hideAvatar = hideAvatar;
         this.buttons.add(button);
     }
- 
+
     /**
-     * 增加操作按钮
+     * Adds an action button to this card.
      *
-     * @param button
+     * @param button the button to add; must not be {@code null}
+     * @throws IllegalArgumentException if {@code button} is {@code null} or the maximum button count is exceeded
      */
     public void addButton(ActionCardButton button) {
         if (button == null) {
@@ -119,46 +153,101 @@ public class ActionCardMessage extends BaseMessage {
         buttons.add(button);
     }
 
+    /**
+     * Returns the message title.
+     *
+     * @return the title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Sets the message title.
+     *
+     * @param title the title to set
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Returns the Markdown-formatted body.
+     *
+     * @return the text
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Sets the Markdown-formatted body.
+     *
+     * @param text the text to set
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Returns the avatar visibility setting.
+     *
+     * @return the hide avatar type
+     */
     public HideAvatarType getHideAvatar() {
         return hideAvatar;
     }
 
+    /**
+     * Sets the avatar visibility setting.
+     *
+     * @param hideAvatar the hide avatar type to set
+     */
     public void setHideAvatar(HideAvatarType hideAvatar) {
         this.hideAvatar = hideAvatar;
     }
 
+    /**
+     * Returns the button orientation.
+     *
+     * @return the button orientation type
+     */
     public ButtonOrientationType getBtnOrientation() {
         return btnOrientation;
     }
 
+    /**
+     * Sets the button orientation.
+     *
+     * @param btnOrientation the button orientation type to set
+     */
     public void setBtnOrientation(ButtonOrientationType btnOrientation) {
         this.btnOrientation = btnOrientation;
     }
 
+    /**
+     * Returns the list of action buttons.
+     *
+     * @return the button list, never {@code null}
+     */
     public List<ActionCardButton> getButtons() {
         return buttons;
     }
 
+    /**
+     * Returns whether independent jump layout is used.
+     *
+     * @return {@code true} if independent jump layout is enabled
+     */
     public boolean isButtonView() {
         return isButtonView;
     }
 
+    /**
+     * Sets whether independent jump layout is used.
+     *
+     * @param buttonView {@code true} to enable independent jump layout
+     */
     public void setButtonView(boolean buttonView) {
         isButtonView = buttonView;
     }

@@ -28,26 +28,40 @@ import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 企业内部应用免登
- * https://ding-doc.dingtalk.com/doc#/serverapi2/clotub
- * 用户管理
- * https://ding-doc.dingtalk.com/doc#/serverapi2/ege851
+ * Operations for DingTalk enterprise internal application login-free access
+ * and user management.
+ * <p>Provides methods to retrieve user info by authorization code,
+ * resolve user IDs from union IDs, and fetch detailed user profiles.</p>
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 3.0.0
+ * @see DingTalkOperations
+ * @see DingTalkTemplate#opsForAccount()
+ * @see <a href="https://ding-doc.dingtalk.com/doc#/serverapi2/clotub">Enterprise internal application login-free</a>
+ * @see <a href="https://ding-doc.dingtalk.com/doc#/serverapi2/ege851">User management</a>
  */
 @Slf4j
 public class DingTalkAccountOperations extends DingTalkOperations {
 
+	/**
+	 * Constructs account operations with the given template.
+	 *
+	 * @param template the DingTalk template; must not be {@code null}
+	 */
 	public DingTalkAccountOperations(DingTalkTemplate template) {
 		super(template);
 	}
 
 	/**
-	 * 1、企业内部应用免登录：通过免登授权码和access_token获取用户信息
-	 * https://ding-doc.dingtalk.com/doc#/serverapi2/clotub
-	 * 
-	 * @param code    		免登授权码，参考上述“获取免登授权码”
-	 * @param accessToken 	调用接口凭证
-	 * @return the OapiUserGetuserinfoResponse
-	 * @throws ApiException if Api request Exception
+	 * Retrieves user information by login-free authorization code.
+	 * <p>The authorization code is obtained from the DingTalk client SDK
+	 * and can only be used once.</p>
+	 *
+	 * @param code         the login-free authorization code
+	 * @param accessToken  the access token for API calls
+	 * @return the user info response
+	 * @throws ApiException if the API request fails
+	 * @see <a href="https://ding-doc.dingtalk.com/doc#/serverapi2/clotub">Login-free documentation</a>
 	 */
 	public OapiUserGetuserinfoResponse getUserinfoBycode( String code, String accessToken) throws ApiException {
 		DingTalkClient client = new DefaultDingTalkClient(PREFIX + "/user/getuserinfo");
@@ -56,44 +70,44 @@ public class DingTalkAccountOperations extends DingTalkOperations {
 		request.setHttpMethod(METHOD_GET);
 		return client.execute(request, accessToken);
 	}
-	
-	
+
 	/**
-	 * 根据unionid获取userid
-	 * https://open-doc.dingtalk.com/microapp/serverapi2/ege851#-5
-	 * 
-	 * @param unionid 员工在当前企业内的唯一标识，也称staffId。可由企业在创建时指定，并代表一定含义比如工号，创建后不可修改，企业内必须唯一。长度为1~64个字符，如果不传，服务器将自动生成一个userid。
-	 * @param accessToken 	调用接口凭证
-	 * @return the OapiUserGetUseridByUnionidResponse
-	 * @throws ApiException if Api request Exception 
+	 * Retrieves the DingTalk user ID corresponding to a union ID.
+	 *
+	 * @param unionid      the union ID of the employee
+	 * @param accessToken  the access token for API calls
+	 * @return the user ID response
+	 * @throws ApiException if the API request fails
+	 * @see <a href="https://open-doc.dingtalk.com/microapp/serverapi2/ege851#-5">Get userid by unionid</a>
 	 */
 	public OapiUserGetUseridByUnionidResponse getUseridByUnionid( String unionid, String accessToken) throws ApiException {
-		
+
 		DingTalkClient client = new DefaultDingTalkClient(PREFIX + "/user/getUseridByUnionid");
 		OapiUserGetUseridByUnionidRequest request = new OapiUserGetUseridByUnionidRequest();
 		request.setUnionid(unionid);
 		request.setHttpMethod(METHOD_GET);
-		
+
 		return client.execute(request, accessToken);
 	}
-	
-	/*
-	 * 根据钉钉的userid拿取用户的详细信息(包括手机号，部门id，等)
-	 * https://open-doc.dingtalk.com/microapp/serverapi2/ege851
-	 * @param userid 用户ID
-	 * @param accessToken 	调用接口凭证
-	 * @return the OapiUserGetResponse
-	 * @throws ApiException if Api request Exception 
+
+	/**
+	 * Retrieves detailed user information (including mobile number, department ID, etc.)
+	 * by DingTalk user ID.
+	 *
+	 * @param userid       the DingTalk user ID (staffId)
+	 * @param accessToken  the access token for API calls
+	 * @return the user detail response
+	 * @throws ApiException if the API request fails
+	 * @see <a href="https://open-doc.dingtalk.com/microapp/serverapi2/ege851">User management</a>
 	 */
 	public OapiUserGetResponse getUserByUserid( String userid, String accessToken) throws ApiException {
-		
+
 		DingTalkClient client = new DefaultDingTalkClient(PREFIX + "/user/get");
 		OapiUserGetRequest request = new OapiUserGetRequest();
 		request.setUserid(userid);
 		request.setHttpMethod(METHOD_GET);
-		
+
 		return client.execute(request, accessToken);
 	}
 
-	
 }
