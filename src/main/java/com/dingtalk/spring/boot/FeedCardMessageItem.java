@@ -19,7 +19,7 @@ package com.dingtalk.spring.boot.bean;
  * Represents a single item within a DingTalk FeedCard message.
  * <p>Each item has a title, a target URL, and a cover image URL.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see FeedCardMessage
  */

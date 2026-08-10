@@ -8,7 +8,7 @@ import lombok.ToString;
  * Configuration properties for mobile access applications
  * (QR code login).
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.dingtalk.spring.boot.DingTalkConfigProvider#getDingTalkLoginProperties(String, String)
  */

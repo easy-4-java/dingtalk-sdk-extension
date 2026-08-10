@@ -43,7 +43,7 @@ import org.apache.commons.lang3.ArrayUtils;
  * Messages can be sent by corporate ID + robot ID (using configured webhook)
  * or by an explicit webhook URL.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DingTalkOperations
  * @see DingTalkTemplate#opsForRobot()

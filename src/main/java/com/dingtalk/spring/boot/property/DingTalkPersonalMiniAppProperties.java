@@ -9,7 +9,7 @@ import lombok.ToString;
  * <p>Each personal application is assigned a unique appId and appSecret
  * used to obtain user-authorized access tokens.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.dingtalk.spring.boot.DingTalkConfigProvider#getDingTalkPersonalMiniAppProperties(String, String)
  */

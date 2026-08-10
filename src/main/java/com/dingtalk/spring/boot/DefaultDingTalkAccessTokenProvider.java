@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  * the DingTalk Open API directly to obtain access tokens.
  * <p>Application secrets are resolved via the {@link DingTalkConfigProvider}.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DingTalkAccessTokenProvider
  * @see DingTalkConfigProvider

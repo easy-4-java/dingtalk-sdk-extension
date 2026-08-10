@@ -27,7 +27,7 @@ import com.taobao.api.ApiException;
  * <p>Implements the SHA-1 based signature algorithm required by the
  * DingTalk JSAPI ticket verification flow.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see <a href="https://ding-doc.dingtalk.com/doc#/dev/uwa7vs">JSAPI signature documentation</a>
  */

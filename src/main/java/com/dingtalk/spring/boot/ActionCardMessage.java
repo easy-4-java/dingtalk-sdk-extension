@@ -25,7 +25,7 @@ import java.util.List;
  * action buttons. The DingTalk SDK officially supports up to 5 buttons;
  * this limit is enforced by {@link #addButton(ActionCardButton)}.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see BaseMessage
  * @see ActionCardButton

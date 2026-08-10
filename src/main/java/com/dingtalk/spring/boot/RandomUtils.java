@@ -19,7 +19,7 @@ package com.dingtalk.spring.boot.utils;
  * Utility class for generating random alphanumeric strings.
  * <p>Used to produce nonce strings required by DingTalk JSAPI signatures.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DingTalkUtils#sign(String, String, long, String)
  */
