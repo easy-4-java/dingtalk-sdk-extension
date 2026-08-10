@@ -340,11 +340,12 @@
                 <jdk>[1.8,)</jdk>
             </activation>
             <properties>
-                <maven-central-publishing-plugin.version>0.11.0</maven-central-publishing-plugin.version>
-                <additionalparam>-Xdoclint:none</additionalparam>
-                <maven-jacoco-plugin.version>0.8.15</maven-jacoco-plugin.version>
-            
-		<dingtalk-service-sdk.version>2.0.0</dingtalk-service-sdk.version>
+        <!-- Dependency versions -->
+        <additionalparam>-Xdoclint:none</additionalparam>
+        <dingtalk-service-sdk.version>2.0.0</dingtalk-service-sdk.version>
+        <!-- Maven Plugin versions -->
+        <maven-central-publishing-plugin.version>0.11.0</maven-central-publishing-plugin.version>
+        <maven-jacoco-plugin.version>0.8.15</maven-jacoco-plugin.version>
 		<commons-collections4.version>4.5.0</commons-collections4.version></properties>
         </profile>
         <!-- 发布到 Maven Central Portal：mvn -Prelease deploy（GPG 签名 + 源码 + Javadoc + Central 发布插件） -->
