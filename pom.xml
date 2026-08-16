@@ -491,7 +491,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <slf4j.version>2.0.18</slf4j.version>
-        <jackson.version>2.17.2</jackson.version>
+        <jackson-bom.version>2.18.9</jackson-bom.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <lombok.version>1.18.46</lombok.version>
         <junit.version>5.11.4</junit.version>
@@ -520,17 +520,18 @@
     <!-- 依赖版本统一管理（dependencyManagement） -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!-- For DingTalk -->
             <dependency>
                 <groupId>com.aliyun</groupId>
                 <artifactId>alibaba-dingtalk-service-sdk</artifactId>
                 <version>${dingtalk-service-sdk.version}</version>
-            </dependency>
-            <!-- For Jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
             </dependency>
             <!-- For Commons Lang3 -->
             <dependency>
