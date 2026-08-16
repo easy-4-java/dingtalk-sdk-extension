@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * <p>Supports login-free access for enterprise internal applications,
  * third-party enterprise applications, and application management backends.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DingTalkOperations
  * @see DingTalkTemplate#opsForUser()

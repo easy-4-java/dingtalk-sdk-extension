@@ -22,7 +22,7 @@ import java.io.Serializable;
  * <p>Every concrete message (text, link, markdown, action card, feed card)
  * extends this class and carries a {@link MessageType} discriminator.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see MessageType
  * @see TextMessage

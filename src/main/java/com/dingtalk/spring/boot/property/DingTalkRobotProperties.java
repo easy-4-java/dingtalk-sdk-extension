@@ -9,7 +9,7 @@ import lombok.ToString;
  * <p>Contains the robot ID, access token for the webhook URL,
  * and an optional secret token for signature verification.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.dingtalk.spring.boot.DingTalkRobotOperations
  */

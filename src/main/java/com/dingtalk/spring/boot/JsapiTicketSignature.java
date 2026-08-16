@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
  * <p>This bean holds the agent ID, target URL, nonce string, timestamp,
  * corporate ID, and the computed signature used to authenticate JSAPI requests.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.dingtalk.spring.boot.DingTalkJsapiOperations
  */

@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  * <p>Provides methods to retrieve user information and persistent codes
  * using the SNS API for third-party application login flows.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DingTalkOperations
  * @see DingTalkTemplate#opsForSso()
