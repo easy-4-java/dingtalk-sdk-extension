@@ -7,7 +7,7 @@ import com.dingtalk.spring.boot.property.*;
  * <p>Implementations supply configuration for corporate apps, personal mini apps,
  * suites, login apps, and robots based on corporate ID and application identifiers.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DefaultDingTalkConfigProvider
  * @see DingTalkProperties

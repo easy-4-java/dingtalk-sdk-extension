@@ -8,7 +8,7 @@ import lombok.ToString;
  * Configuration properties for third-party enterprise applications
  * (suite-based mini programs and H5 apps).
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see com.dingtalk.spring.boot.DingTalkConfigProvider#getDingTalkSuiteProperties(String, String)
  */

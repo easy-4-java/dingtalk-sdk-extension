@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * <p>Provides methods to retrieve user info by authorization code,
  * resolve user IDs from union IDs, and fetch detailed user profiles.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DingTalkOperations
  * @see DingTalkTemplate#opsForAccount()

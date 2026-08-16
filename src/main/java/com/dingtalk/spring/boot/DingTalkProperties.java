@@ -18,7 +18,7 @@ import lombok.ToString;
  * configuration for various application types (corporate apps,
  * personal mini apps, suites, login apps, and robots).</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DefaultDingTalkConfigProvider
  */

@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
  * application-specific user identifiers.
  * <p>Default implementations simply pass through the provided values.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  */
 public interface DingTalkUserIdProvider {

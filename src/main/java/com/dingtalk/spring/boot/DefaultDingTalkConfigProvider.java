@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>On {@link #init()}, application keys and secrets from all configured property lists
  * are indexed into a {@link ConcurrentHashMap} for fast lookup.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DingTalkConfigProvider
  * @see DingTalkProperties

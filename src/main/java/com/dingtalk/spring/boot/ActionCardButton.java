@@ -20,7 +20,7 @@ package com.dingtalk.spring.boot.bean;
  * <p>Each button has a display title and an action URL that is
  * opened when the user clicks the button.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see ActionCardMessage
  */

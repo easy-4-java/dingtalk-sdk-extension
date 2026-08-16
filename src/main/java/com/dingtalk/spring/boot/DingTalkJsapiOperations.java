@@ -28,7 +28,7 @@ import com.taobao.api.ApiException;
  * <p>Used to obtain JSAPI tickets and compute signatures required for
  * front-end DingTalk JSAPI calls.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DingTalkOperations
  * @see DingTalkTemplate#opsForJsapi()
