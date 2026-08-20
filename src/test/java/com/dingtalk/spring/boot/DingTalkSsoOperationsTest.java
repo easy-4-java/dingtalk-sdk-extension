@@ -1,6 +1,6 @@
 package com.dingtalk.spring.boot;
 
-import com.dingtalk.spring.boot.property.*;
+import com.dingtalk.spring.boot.config.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DingTalkSsoOperationsTest {
 
     private DingTalkSsoOperations createOperations() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpId("corp1");
 
         DefaultDingTalkConfigProvider configProvider = new DefaultDingTalkConfigProvider(props);

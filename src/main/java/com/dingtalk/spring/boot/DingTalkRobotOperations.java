@@ -33,7 +33,7 @@ import com.dingtalk.spring.boot.bean.HideAvatarType;
 import com.dingtalk.spring.boot.bean.LinkMessage;
 import com.dingtalk.spring.boot.bean.MarkdownMessage;
 import com.dingtalk.spring.boot.bean.TextMessage;
-import com.dingtalk.spring.boot.property.DingTalkRobotProperties;
+import com.dingtalk.spring.boot.config.DingTalkRobotConfig;
 import com.taobao.api.ApiException;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -73,9 +73,9 @@ public class DingTalkRobotOperations extends DingTalkOperations {
 	 * @return the fully-qualified webhook URL with access token and signature
 	 */
 	protected String getWebhook(String corpId, String robotId, Long timestamp) {
-		DingTalkRobotProperties poperties = template.getDingTalkConfigProvider().getDingTalkRobotProperties(corpId, robotId);
-        StringBuilder serverUrl = new StringBuilder(PREFIX + "/robot/send?access_token=").append(poperties.getAccessToken());
-        String sign =  template.getSign(poperties.getSecretToken(), timestamp);
+		DingTalkRobotConfig config = template.getDingTalkConfigProvider().getDingTalkRobotConfig(corpId, robotId);
+        StringBuilder serverUrl = new StringBuilder(PREFIX + "/robot/send?access_token=").append(config.getAccessToken());
+        String sign =  template.getSign(config.getSecretToken(), timestamp);
         serverUrl.append("&timestamp=").append(timestamp).append("&sign=").append(sign);
         return serverUrl.toString();
     }

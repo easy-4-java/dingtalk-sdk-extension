@@ -1,6 +1,6 @@
 package com.dingtalk.spring.boot;
 
-import com.dingtalk.spring.boot.property.*;
+import com.dingtalk.spring.boot.config.*;
 import com.taobao.api.ApiException;
 import org.junit.jupiter.api.Test;
 
@@ -11,17 +11,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class DingTalkTemplateTest {
 
     private DingTalkTemplate createTemplate() {
-        DingTalkCorpAppProperties corpApp = new DingTalkCorpAppProperties();
+        DingTalkCorpAppConfig corpApp = new DingTalkCorpAppConfig();
         corpApp.setAgentId("agent1");
         corpApp.setAppKey("key1");
         corpApp.setAppSecret("secret1");
 
-        DingTalkRobotProperties robot = new DingTalkRobotProperties();
+        DingTalkRobotConfig robot = new DingTalkRobotConfig();
         robot.setRobotId("robot1");
         robot.setAccessToken("token1");
         robot.setSecretToken("SECsecret1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpId("corp1");
         props.setCorpSecret("corpSecret1");
         props.setCorpApps(List.of(corpApp));

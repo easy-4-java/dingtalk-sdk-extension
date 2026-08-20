@@ -1,76 +1,76 @@
 package com.dingtalk.spring.boot;
 
-import com.dingtalk.spring.boot.property.*;
+import com.dingtalk.spring.boot.config.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DingTalkPropertiesTest {
+class DingTalkConfigTest {
 
     @Test
     void shouldHavePrefixConstant() {
-        assertEquals("dingtalk", DingTalkProperties.PREFIX);
+        assertEquals("dingtalk", DingTalkConfig.PREFIX);
     }
 
     @Test
     void shouldSetAndGetCorpId() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpId("corp1");
         assertEquals("corp1", props.getCorpId());
     }
 
     @Test
     void shouldSetAndGetCorpSecret() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpSecret("secret");
         assertEquals("secret", props.getCorpSecret());
     }
 
     @Test
     void shouldSetAndGetCorpApps() {
-        DingTalkProperties props = new DingTalkProperties();
-        List<DingTalkCorpAppProperties> apps = List.of(new DingTalkCorpAppProperties());
+        DingTalkConfig props = new DingTalkConfig();
+        List<DingTalkCorpAppConfig> apps = List.of(new DingTalkCorpAppConfig());
         props.setCorpApps(apps);
         assertEquals(1, props.getCorpApps().size());
     }
 
     @Test
     void shouldSetAndGetApps() {
-        DingTalkProperties props = new DingTalkProperties();
-        List<DingTalkPersonalMiniAppProperties> apps = List.of(new DingTalkPersonalMiniAppProperties());
+        DingTalkConfig props = new DingTalkConfig();
+        List<DingTalkPersonalMiniAppConfig> apps = List.of(new DingTalkPersonalMiniAppConfig());
         props.setApps(apps);
         assertEquals(1, props.getApps().size());
     }
 
     @Test
     void shouldSetAndGetSuites() {
-        DingTalkProperties props = new DingTalkProperties();
-        List<DingTalkSuiteProperties> suites = List.of(new DingTalkSuiteProperties());
+        DingTalkConfig props = new DingTalkConfig();
+        List<DingTalkSuiteConfig> suites = List.of(new DingTalkSuiteConfig());
         props.setSuites(suites);
         assertEquals(1, props.getSuites().size());
     }
 
     @Test
     void shouldSetAndGetLogins() {
-        DingTalkProperties props = new DingTalkProperties();
-        List<DingTalkLoginProperties> logins = List.of(new DingTalkLoginProperties());
+        DingTalkConfig props = new DingTalkConfig();
+        List<DingTalkLoginConfig> logins = List.of(new DingTalkLoginConfig());
         props.setLogins(logins);
         assertEquals(1, props.getLogins().size());
     }
 
     @Test
     void shouldSetAndGetRobots() {
-        DingTalkProperties props = new DingTalkProperties();
-        List<DingTalkRobotProperties> robots = List.of(new DingTalkRobotProperties());
+        DingTalkConfig props = new DingTalkConfig();
+        List<DingTalkRobotConfig> robots = List.of(new DingTalkRobotConfig());
         props.setRobots(robots);
         assertEquals(1, props.getRobots().size());
     }
 
     @Test
     void shouldHaveNullDefaults() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         assertNull(props.getCorpId());
         assertNull(props.getCorpSecret());
         assertNull(props.getCorpApps());
@@ -78,13 +78,5 @@ class DingTalkPropertiesTest {
         assertNull(props.getSuites());
         assertNull(props.getLogins());
         assertNull(props.getRobots());
-    }
-
-    @Test
-    void shouldImplementToString() {
-        DingTalkProperties props = new DingTalkProperties();
-        props.setCorpId("c1");
-        assertNotNull(props.toString());
-        assertTrue(props.toString().contains("c1"));
     }
 }

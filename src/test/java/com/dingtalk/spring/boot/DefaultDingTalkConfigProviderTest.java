@@ -1,6 +1,6 @@
 package com.dingtalk.spring.boot;
 
-import com.dingtalk.spring.boot.property.*;
+import com.dingtalk.spring.boot.config.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -12,175 +12,175 @@ class DefaultDingTalkConfigProviderTest {
 
     @Test
     void shouldReturnDingTalkProperties() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpId("corp1");
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertEquals(props, provider.getDingTalkProperties("corp1"));
+        assertEquals(props, provider.getDingTalkConfig("corp1"));
     }
 
     @Test
     void shouldReturnCorpAppPropertiesByAgentId() {
-        DingTalkCorpAppProperties app = new DingTalkCorpAppProperties();
+        DingTalkCorpAppConfig app = new DingTalkCorpAppConfig();
         app.setAgentId("agent1");
         app.setAppKey("key1");
         app.setAppSecret("secret1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpApps(List.of(app));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        DingTalkCorpAppProperties result = provider.getDingTalkCorpAppProperties("corp1", "agent1");
+        DingTalkCorpAppConfig result = provider.getDingTalkCorpAppConfig("corp1", "agent1");
         assertNotNull(result);
         assertEquals("key1", result.getAppKey());
     }
 
     @Test
     void shouldReturnNullWhenCorpAppsEmpty() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkCorpAppProperties("corp1", "agent1"));
+        assertNull(provider.getDingTalkCorpAppConfig("corp1", "agent1"));
     }
 
     @Test
     void shouldReturnNullWhenAgentIdNotFound() {
-        DingTalkCorpAppProperties app = new DingTalkCorpAppProperties();
+        DingTalkCorpAppConfig app = new DingTalkCorpAppConfig();
         app.setAgentId("agent1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpApps(List.of(app));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkCorpAppProperties("corp1", "unknown"));
+        assertNull(provider.getDingTalkCorpAppConfig("corp1", "unknown"));
     }
 
     @Test
     void shouldReturnPersonalMiniAppProperties() {
-        DingTalkPersonalMiniAppProperties app = new DingTalkPersonalMiniAppProperties();
+        DingTalkPersonalMiniAppConfig app = new DingTalkPersonalMiniAppConfig();
         app.setAppId("app1");
         app.setAppSecret("secret1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setApps(List.of(app));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNotNull(provider.getDingTalkPersonalMiniAppProperties("corp1", "app1"));
+        assertNotNull(provider.getDingTalkPersonalMiniAppConfig("corp1", "app1"));
     }
 
     @Test
     void shouldReturnNullWhenAppsEmpty() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkPersonalMiniAppProperties("corp1", "app1"));
+        assertNull(provider.getDingTalkPersonalMiniAppConfig("corp1", "app1"));
     }
 
     @Test
     void shouldReturnNullWhenAppIdNotFound() {
-        DingTalkPersonalMiniAppProperties app = new DingTalkPersonalMiniAppProperties();
+        DingTalkPersonalMiniAppConfig app = new DingTalkPersonalMiniAppConfig();
         app.setAppId("app1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setApps(List.of(app));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkPersonalMiniAppProperties("corp1", "unknown"));
+        assertNull(provider.getDingTalkPersonalMiniAppConfig("corp1", "unknown"));
     }
 
     @Test
     void shouldReturnSuiteProperties() {
-        DingTalkSuiteProperties suite = new DingTalkSuiteProperties();
+        DingTalkSuiteConfig suite = new DingTalkSuiteConfig();
         suite.setSuiteId("suite1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setSuites(List.of(suite));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNotNull(provider.getDingTalkSuiteProperties("corp1", "suite1"));
+        assertNotNull(provider.getDingTalkSuiteConfig("corp1", "suite1"));
     }
 
     @Test
     void shouldReturnNullWhenSuitesEmpty() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkSuiteProperties("corp1", "suite1"));
+        assertNull(provider.getDingTalkSuiteConfig("corp1", "suite1"));
     }
 
     @Test
     void shouldReturnNullWhenSuiteIdNotFound() {
-        DingTalkSuiteProperties suite = new DingTalkSuiteProperties();
+        DingTalkSuiteConfig suite = new DingTalkSuiteConfig();
         suite.setSuiteId("suite1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setSuites(List.of(suite));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkSuiteProperties("corp1", "unknown"));
+        assertNull(provider.getDingTalkSuiteConfig("corp1", "unknown"));
     }
 
     @Test
     void shouldReturnLoginProperties() {
-        DingTalkLoginProperties login = new DingTalkLoginProperties();
+        DingTalkLoginConfig login = new DingTalkLoginConfig();
         login.setAppId("login1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setLogins(List.of(login));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNotNull(provider.getDingTalkLoginProperties("corp1", "login1"));
+        assertNotNull(provider.getDingTalkLoginConfig("corp1", "login1"));
     }
 
     @Test
     void shouldReturnNullWhenLoginsEmpty() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkLoginProperties("corp1", "login1"));
+        assertNull(provider.getDingTalkLoginConfig("corp1", "login1"));
     }
 
     @Test
     void shouldReturnNullWhenLoginIdNotFound() {
-        DingTalkLoginProperties login = new DingTalkLoginProperties();
+        DingTalkLoginConfig login = new DingTalkLoginConfig();
         login.setAppId("login1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setLogins(List.of(login));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkLoginProperties("corp1", "unknown"));
+        assertNull(provider.getDingTalkLoginConfig("corp1", "unknown"));
     }
 
     @Test
     void shouldReturnRobotProperties() {
-        DingTalkRobotProperties robot = new DingTalkRobotProperties();
+        DingTalkRobotConfig robot = new DingTalkRobotConfig();
         robot.setRobotId("robot1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setRobots(List.of(robot));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNotNull(provider.getDingTalkRobotProperties("corp1", "robot1"));
+        assertNotNull(provider.getDingTalkRobotConfig("corp1", "robot1"));
     }
 
     @Test
     void shouldReturnNullWhenRobotsEmpty() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkRobotProperties("corp1", "robot1"));
+        assertNull(provider.getDingTalkRobotConfig("corp1", "robot1"));
     }
 
     @Test
     void shouldReturnNullWhenRobotIdNotFound() {
-        DingTalkRobotProperties robot = new DingTalkRobotProperties();
+        DingTalkRobotConfig robot = new DingTalkRobotConfig();
         robot.setRobotId("robot1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setRobots(List.of(robot));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
-        assertNull(provider.getDingTalkRobotProperties("corp1", "unknown"));
+        assertNull(provider.getDingTalkRobotConfig("corp1", "unknown"));
     }
 
     @Test
     void shouldReturnCorpId() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpId("corp1");
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertEquals("corp1", provider.getCorpId("anyKey"));
@@ -188,7 +188,7 @@ class DefaultDingTalkConfigProviderTest {
 
     @Test
     void shouldReturnCorpSecret() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpSecret("secret");
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertEquals("secret", provider.getCorpSecret("corp1"));
@@ -196,23 +196,23 @@ class DefaultDingTalkConfigProviderTest {
 
     @Test
     void shouldInitAndRegisterAppKeys() {
-        DingTalkCorpAppProperties corpApp = new DingTalkCorpAppProperties();
+        DingTalkCorpAppConfig corpApp = new DingTalkCorpAppConfig();
         corpApp.setAppKey("key1");
         corpApp.setAppSecret("secret1");
 
-        DingTalkPersonalMiniAppProperties miniApp = new DingTalkPersonalMiniAppProperties();
+        DingTalkPersonalMiniAppConfig miniApp = new DingTalkPersonalMiniAppConfig();
         miniApp.setAppId("appId1");
         miniApp.setAppSecret("secret2");
 
-        DingTalkSuiteProperties suite = new DingTalkSuiteProperties();
+        DingTalkSuiteConfig suite = new DingTalkSuiteConfig();
         suite.setAppId("suiteAppId");
         suite.setSuiteSecret("suiteSecret");
 
-        DingTalkLoginProperties login = new DingTalkLoginProperties();
+        DingTalkLoginConfig login = new DingTalkLoginConfig();
         login.setAppId("loginAppId");
         login.setAppSecret("loginSecret");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpApps(List.of(corpApp));
         props.setApps(List.of(miniApp));
         props.setSuites(List.of(suite));
@@ -230,11 +230,11 @@ class DefaultDingTalkConfigProviderTest {
 
     @Test
     void shouldReturnAppSecret() {
-        DingTalkCorpAppProperties corpApp = new DingTalkCorpAppProperties();
+        DingTalkCorpAppConfig corpApp = new DingTalkCorpAppConfig();
         corpApp.setAppKey("key1");
         corpApp.setAppSecret("secret1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpApps(List.of(corpApp));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
@@ -246,7 +246,7 @@ class DefaultDingTalkConfigProviderTest {
 
     @Test
     void shouldHandleEmptyListsInInit() {
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpApps(new ArrayList<>());
         props.setApps(new ArrayList<>());
         props.setSuites(new ArrayList<>());

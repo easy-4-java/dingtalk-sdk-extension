@@ -1,6 +1,6 @@
 package com.dingtalk.spring.boot;
 
-import com.dingtalk.spring.boot.property.*;
+import com.dingtalk.spring.boot.config.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -9,117 +9,122 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Default implementation of {@link DingTalkConfigProvider} backed by {@link DingTalkProperties}.
- * <p>On {@link #init()}, application keys and secrets from all configured property lists
- * are indexed into a {@link ConcurrentHashMap} for fast lookup.</p>
+ * Default implementation of {@link DingTalkConfigProvider} backed by a {@link DingTalkConfig} instance.
+ * <p>On {@link #init()}, application keys and secrets from every configured sub-config list
+ * are indexed into a {@link ConcurrentHashMap} for fast lookup by appKey/appId.</p>
  *
  * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 3.0.0
  * @see DingTalkConfigProvider
- * @see DingTalkProperties
+ * @see DingTalkConfig
  */
 public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
 
-    private final DingTalkProperties dingTalkProperties;
-    private Map<String, String> appKeySecret = new ConcurrentHashMap<>();
+    private final DingTalkConfig dingTalkConfig;
+    private final Map<String, String> appKeySecret = new ConcurrentHashMap<>();
 
     /**
-     * Constructs a provider with the given properties.
+     * Constructs a provider with the given root configuration object.
      *
-     * @param dingTalkProperties  the DingTalk configuration properties; must not be {@code null}
+     * @param dingTalkConfig  the DingTalk configuration object; must not be {@code null}
      */
-    public DefaultDingTalkConfigProvider(DingTalkProperties dingTalkProperties) {
-        this.dingTalkProperties = dingTalkProperties;
+    public DefaultDingTalkConfigProvider(DingTalkConfig dingTalkConfig) {
+        this.dingTalkConfig = dingTalkConfig;
     }
 
     /**
-     * Initializes the internal app-key-to-secret mapping from all configured property lists.
-     * <p>Must be called once after construction and before using lookup methods.</p>
+     * Initializes the internal app-key-to-secret mapping from all configured lists.
+     * <p>Must be called once after construction and before using lookup methods. Safe to re-call (idempotent).</p>
      */
     public void init() {
-
-        if(!CollectionUtils.isEmpty(this.dingTalkProperties.getCorpApps())) {
-            for (DingTalkCorpAppProperties properties : this.dingTalkProperties.getCorpApps()) {
-                appKeySecret.put(properties.getAppKey(), properties.getAppSecret());
+        if (!CollectionUtils.isEmpty(this.dingTalkConfig.getCorpApps())) {
+            for (DingTalkCorpAppConfig cfg : this.dingTalkConfig.getCorpApps()) {
+                appKeySecret.put(cfg.getAppKey(), cfg.getAppSecret());
             }
         }
-        if(!CollectionUtils.isEmpty(this.dingTalkProperties.getApps())) {
-            for (DingTalkPersonalMiniAppProperties properties : this.dingTalkProperties.getApps()) {
-                appKeySecret.put(properties.getAppId(), properties.getAppSecret());
+        if (!CollectionUtils.isEmpty(this.dingTalkConfig.getApps())) {
+            for (DingTalkPersonalMiniAppConfig cfg : this.dingTalkConfig.getApps()) {
+                appKeySecret.put(cfg.getAppId(), cfg.getAppSecret());
             }
         }
-        if(!CollectionUtils.isEmpty(this.dingTalkProperties.getSuites())) {
-            for (DingTalkSuiteProperties properties : this.dingTalkProperties.getSuites()) {
-                appKeySecret.put(properties.getAppId(), properties.getSuiteSecret());
+        if (!CollectionUtils.isEmpty(this.dingTalkConfig.getSuites())) {
+            for (DingTalkSuiteConfig cfg : this.dingTalkConfig.getSuites()) {
+                appKeySecret.put(cfg.getAppId(), cfg.getSuiteSecret());
             }
         }
-        if(!CollectionUtils.isEmpty(this.dingTalkProperties.getLogins())) {
-            for (DingTalkLoginProperties properties : this.dingTalkProperties.getLogins()) {
-                appKeySecret.put(properties.getAppId(), properties.getAppSecret());
+        if (!CollectionUtils.isEmpty(this.dingTalkConfig.getLogins())) {
+            for (DingTalkLoginConfig cfg : this.dingTalkConfig.getLogins()) {
+                appKeySecret.put(cfg.getAppId(), cfg.getAppSecret());
             }
         }
-
     }
 
     /** {@inheritDoc} */
     @Override
-    public DingTalkProperties getDingTalkProperties(String corpId) {
-        return dingTalkProperties;
+    public DingTalkConfig getDingTalkConfig(String corpId) {
+        return dingTalkConfig;
     }
 
     /** {@inheritDoc} */
     @Override
-    public DingTalkCorpAppProperties getDingTalkCorpAppProperties(String corpId, String agentId) {
-        if(CollectionUtils.isEmpty(dingTalkProperties.getCorpApps())){
+    public DingTalkCorpAppConfig getDingTalkCorpAppConfig(String corpId, String agentId) {
+        if (CollectionUtils.isEmpty(dingTalkConfig.getCorpApps())) {
             return null;
         }
-        Optional<DingTalkCorpAppProperties> optional = dingTalkProperties.getCorpApps().stream()
-                .filter(item -> StringUtils.equals(item.getAgentId(), agentId)).findFirst();
-        return optional.isPresent() ? optional.get() : null;
+        Optional<DingTalkCorpAppConfig> optional = dingTalkConfig.getCorpApps().stream()
+                .filter(item -> StringUtils.equals(item.getAgentId(), agentId))
+                .findFirst();
+        return optional.orElse(null);
     }
 
     /** {@inheritDoc} */
     @Override
-    public DingTalkPersonalMiniAppProperties getDingTalkPersonalMiniAppProperties(String corpId, String appId) {
-        if(CollectionUtils.isEmpty(dingTalkProperties.getApps())){
+    public DingTalkPersonalMiniAppConfig getDingTalkPersonalMiniAppConfig(String corpId, String appId) {
+        if (CollectionUtils.isEmpty(dingTalkConfig.getApps())) {
             return null;
         }
-        Optional<DingTalkPersonalMiniAppProperties> optional = dingTalkProperties.getApps().stream()
-                .filter(item -> StringUtils.equals(item.getAppId(), appId)).findFirst();
-        return optional.isPresent() ? optional.get() : null;
+        Optional<DingTalkPersonalMiniAppConfig> optional = dingTalkConfig.getApps().stream()
+                .filter(item -> StringUtils.equals(item.getAppId(), appId))
+                .findFirst();
+        return optional.orElse(null);
     }
 
     /** {@inheritDoc} */
     @Override
-    public DingTalkSuiteProperties getDingTalkSuiteProperties(String corpId, String suiteId) {
-        if(CollectionUtils.isEmpty(dingTalkProperties.getSuites())){
+    public DingTalkSuiteConfig getDingTalkSuiteConfig(String corpId, String suiteId) {
+        if (CollectionUtils.isEmpty(dingTalkConfig.getSuites())) {
             return null;
         }
-        Optional<DingTalkSuiteProperties> optional = dingTalkProperties.getSuites().stream()
-                .filter(item -> StringUtils.equals(item.getSuiteId(), suiteId)).findFirst();
-        return optional.isPresent() ? optional.get() : null;
+        Optional<DingTalkSuiteConfig> optional = dingTalkConfig.getSuites().stream()
+                .filter(item -> StringUtils.equals(item.getSuiteId(), suiteId)
+                             || StringUtils.equals(item.getSuiteKey(), suiteId))
+                .findFirst();
+        return optional.orElse(null);
     }
 
     /** {@inheritDoc} */
     @Override
-    public DingTalkLoginProperties getDingTalkLoginProperties(String corpId, String appId) {
-        if(CollectionUtils.isEmpty(dingTalkProperties.getLogins())){
+    public DingTalkLoginConfig getDingTalkLoginConfig(String corpId, String appId) {
+        if (CollectionUtils.isEmpty(dingTalkConfig.getLogins())) {
             return null;
         }
-        Optional<DingTalkLoginProperties> optional = dingTalkProperties.getLogins().stream()
-                .filter(item -> StringUtils.equals(item.getAppId(), appId)).findFirst();
-        return optional.isPresent() ? optional.get() : null;
+        Optional<DingTalkLoginConfig> optional = dingTalkConfig.getLogins().stream()
+                .filter(item -> StringUtils.equals(item.getAppId(), appId))
+                .findFirst();
+        return optional.orElse(null);
     }
 
     /** {@inheritDoc} */
     @Override
-    public DingTalkRobotProperties getDingTalkRobotProperties(String corpId, String robotId) {
-        if(CollectionUtils.isEmpty(dingTalkProperties.getRobots())){
+    public DingTalkRobotConfig getDingTalkRobotConfig(String corpId, String robotId) {
+        if (CollectionUtils.isEmpty(dingTalkConfig.getRobots())) {
             return null;
         }
-        Optional<DingTalkRobotProperties> optional = dingTalkProperties.getRobots().stream()
-                .filter(item -> StringUtils.equals(item.getRobotId(), robotId)).findFirst();
-        return optional.isPresent() ? optional.get() : null;
+        Optional<DingTalkRobotConfig> optional = dingTalkConfig.getRobots().stream()
+                .filter(item -> StringUtils.equals(item.getRobotId(), robotId)
+                             || StringUtils.equals(item.getAccessToken(), robotId))
+                .findFirst();
+        return optional.orElse(null);
     }
 
     /** {@inheritDoc} */
@@ -131,20 +136,19 @@ public class DefaultDingTalkConfigProvider implements DingTalkConfigProvider {
     /** {@inheritDoc} */
     @Override
     public String getCorpId(String appKey) {
-        return dingTalkProperties.getCorpId();
+        return dingTalkConfig.getCorpId();
     }
 
     /** {@inheritDoc} */
     @Override
     public String getCorpSecret(String corpId) {
-        return dingTalkProperties.getCorpSecret();
+        return dingTalkConfig.getCorpSecret();
     }
 
     /** {@inheritDoc} */
     @Override
     public String getAppSecret(String corpId, String appKey) {
-        String appSecret = appKeySecret.get(appKey);
-        return appSecret;
+        return appKeySecret.get(appKey);
     }
 
 }

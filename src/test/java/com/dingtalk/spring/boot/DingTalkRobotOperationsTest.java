@@ -2,7 +2,7 @@ package com.dingtalk.spring.boot;
 
 import com.dingtalk.api.request.OapiRobotSendRequest;
 import com.dingtalk.spring.boot.bean.*;
-import com.dingtalk.spring.boot.property.*;
+import com.dingtalk.spring.boot.config.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class DingTalkRobotOperationsTest {
 
     private DingTalkRobotOperations createOperations() {
-        DingTalkRobotProperties robot = new DingTalkRobotProperties();
+        DingTalkRobotConfig robot = new DingTalkRobotConfig();
         robot.setRobotId("robot1");
         robot.setAccessToken("token1");
         robot.setSecretToken("SECsecret1");
 
-        DingTalkProperties props = new DingTalkProperties();
+        DingTalkConfig props = new DingTalkConfig();
         props.setCorpId("corp1");
         props.setRobots(List.of(robot));
 
