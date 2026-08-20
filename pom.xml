@@ -44,7 +44,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- Dependency versions -->
         <commons-collections4.version>4.5.0</commons-collections4.version>
-        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <dingtalk-service-sdk.version>2.0.0</dingtalk-service-sdk.version>
         <jackson-bom.version>3.2.1</jackson-bom.version>
         <jackson.version>3.2.1</jackson.version>
