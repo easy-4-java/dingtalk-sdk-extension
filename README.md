@@ -119,9 +119,14 @@ Key packages:
 
 | Package | Content |
 | :--- | :--- |
-| `com.dingtalk.spring.boot` | `DingTalkTemplate`, `DingTalkProperties`, `*Operations`, providers, `JsapiTicketSignature` |
-| `com.dingtalk.spring.boot.bean` | `BaseMessage` + `TextMessage` / `MarkdownMessage` / `LinkMessage` / `ActionCardMessage` / `FeedCardMessage`, `MessageType` |
-| `com.dingtalk.spring.boot.property` | `DingTalkCorpAppProperties`, `DingTalkPersonalMiniAppProperties`, `DingTalkSuiteProperties`, `DingTalkLoginProperties`, `DingTalkRobotProperties` |
+| `io.github.easy4j.dingtalk.config` / `config.impl` | `DingTalkConfig`, 5 typed configs (CorpApp/PersonalMiniApp/Suite/Login/Robot), `DingTalkConfigProvider`, `DefaultDingTalkConfigProvider` |
+| `io.github.easy4j.dingtalk.service` / `service.impl` | `DingTalkService` (5 `opsFor*`), `AbstractDingTalkService`, `DefaultDingTalkService`, 6 typed services (Account/Sns/Sso/User/Robot/Jsapi), `DingTalkAccessTokenProvider` |
+| `io.github.easy4j.dingtalk.registry` | `DingTalkServiceRegistry`, `DefaultDingTalkServiceRegistry` |
+| `io.github.easy4j.dingtalk.storage` | `DingTalkConfigStorage`, `InMemoryDingTalkConfigStorage` |
+| `io.github.easy4j.dingtalk.model.message` | `BaseMessage` + `TextMessage` / `MarkdownMessage` / `LinkMessage` / `ActionCardMessage` / `FeedCardMessage`, `MessageType` |
+| `io.github.easy4j.dingtalk.model.jsapi` | `JsapiTicketSignature`, `TicketType` |
+| `io.github.easy4j.dingtalk.error` | `ErrorCode`, `DingTalkApiException` |
+| `io.github.easy4j.dingtalk.internal` | `JsapiSignatureGenerator`, `NonceGenerator` |
 
 ## 5. Installation
 
@@ -152,24 +157,29 @@ Send a signed text message to a group robot:
 
 ```java
 import com.dingtalk.api.response.OapiRobotSendResponse;
-import com.dingtalk.spring.boot.*;
-import com.dingtalk.spring.boot.property.DingTalkRobotProperties;
 import com.taobao.api.ApiException;
 
 import java.util.Collections;
 
-// 1. configure one robot
-DingTalkRobotProperties robot = new DingTalkRobotProperties();
+import io.github.easy4j.dingtalk.config.DingTalkConfig;
+import io.github.easy4j.dingtalk.config.DingTalkRobotConfig;
+import io.github.easy4j.dingtalk.config.impl.DefaultDingTalkConfigProvider;
+import io.github.easy4j.dingtalk.service.DingTalkAccessTokenProvider;
+import io.github.easy4j.dingtalk.service.DingTalkTemplate;
+import io.github.easy4j.dingtalk.service.impl.DefaultDingTalkAccessTokenProvider;
+
+// 1. configure one robot via DingTalkConfig
+DingTalkRobotConfig robot = new DingTalkRobotConfig();
 robot.setRobotId("ops-alert");
 robot.setAccessToken("your-robot-access-token");
 robot.setSecretToken("SEC...");                    // for signed requests
 
-DingTalkProperties props = new DingTalkProperties();
-props.setCorpId("your-corp-id");
-props.setRobots(Collections.singletonList(robot));
+DingTalkConfig cfg = new DingTalkConfig();
+cfg.setCorpId("your-corp-id");
+cfg.setRobots(Collections.singletonList(robot));
 
-// 2. wire providers + template
-DingTalkConfigProvider configProvider = new DefaultDingTalkConfigProvider(props);
+// 2. wire providers + service (use deprecated DingTalkTemplate for migration only)
+DefaultDingTalkConfigProvider configProvider = new DefaultDingTalkConfigProvider(cfg);
 DingTalkAccessTokenProvider tokenProvider = new DefaultDingTalkAccessTokenProvider(configProvider);
 DingTalkTemplate template = new DingTalkTemplate(configProvider, tokenProvider);
 
@@ -185,29 +195,31 @@ timestamp-based HMAC-SHA256 signature).
 
 ## 7. Configuration
 
-`DingTalkProperties` defines the property prefix `dingtalk` (constant
-`DingTalkProperties.PREFIX`). It is a plain POJO — bind it in Spring Boot with
-`@ConfigurationProperties(prefix = "dingtalk")`:
+`DingTalkConfig` is the SDK-native configuration POJO. It carries five nested typed lists
+(`corpApps`, `apps`, `suites`, `logins`, `robots`) plus the enterprise-wide `corpId` and
+`corpSecret`. Pass the instance to `DefaultDingTalkConfigProvider` or implement
+`DingTalkConfigProvider` to load values from any source.
 
-| Property (prefix `dingtalk`) | Type | Description |
+| DingTalkConfig field | Type | Description |
 | :--- | :--- | :--- |
-| `corp-id` | String | Enterprise corpId |
-| `corp-secret` | String | Enterprise secret |
-| `corp-apps` | List\<DingTalkCorpAppProperties\> | In-house mini-program / H5 apps |
-| `apps` | List\<DingTalkPersonalMiniAppProperties\> | Third-party personal mini-apps |
-| `suites` | List\<DingTalkSuiteProperties\> | Third-party enterprise suites |
-| `logins` | List\<DingTalkLoginProperties\> | Scan-login (mobile) apps |
-| `robots` | List\<DingTalkRobotProperties\> | Group robots (`robotId`, `accessToken`, `secretToken`) |
+| `corpId` | String | Enterprise corpId |
+| `corpSecret` | String | Enterprise secret |
+| `corpApps` | List\<DingTalkCorpAppConfig\> | In-house mini-program / H5 apps |
+| `apps` | List\<DingTalkPersonalMiniAppConfig\> | Third-party personal mini-apps |
+| `suites` | List\<DingTalkSuiteConfig\> | Third-party enterprise suites |
+| `logins` | List\<DingTalkLoginConfig\> | Scan-login (mobile) apps |
+| `robots` | List\<DingTalkRobotConfig\> | Group robots (`robotId`, `accessToken`, `secretToken`) |
 
-Example (`application.yml`):
+Example (plain Java):
 
-```yaml
-dingtalk:
-  corp-id: your-corp-id
-  robots:
-    - robot-id: ops-alert
-      access-token: your-robot-access-token
-      secret-token: SEC...
+```java
+DingTalkConfig cfg = new DingTalkConfig();
+cfg.setCorpId("your-corp-id");
+DingTalkRobotConfig robot = new DingTalkRobotConfig();
+robot.setRobotId("ops-alert");
+robot.setAccessToken("your-robot-access-token");
+robot.setSecretToken("SEC...");
+cfg.setRobots(Collections.singletonList(robot));
 ```
 
 ## 8. Core Usage / API
@@ -215,7 +227,7 @@ dingtalk:
 ### 8.1 Typed robot messages
 
 ```java
-import com.dingtalk.spring.boot.bean.MarkdownMessage;
+import io.github.easy4j.dingtalk.model.message.MarkdownMessage;
 
 MarkdownMessage msg = new MarkdownMessage("Deploy Notice", "**release v1.2.0** finished", true);
 OapiRobotSendResponse resp = template.opsForRobot().sendMessage("corp-1", "ops-alert", msg);

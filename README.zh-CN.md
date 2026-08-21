@@ -117,9 +117,14 @@
 
 | 包 | 内容 |
 | :--- | :--- |
-| `com.dingtalk.spring.boot` | `DingTalkTemplate`、`DingTalkProperties`、`*Operations`、Provider、`JsapiTicketSignature` |
-| `com.dingtalk.spring.boot.bean` | `BaseMessage` + `TextMessage` / `MarkdownMessage` / `LinkMessage` / `ActionCardMessage` / `FeedCardMessage`、`MessageType` |
-| `com.dingtalk.spring.boot.property` | `DingTalkCorpAppProperties`、`DingTalkPersonalMiniAppProperties`、`DingTalkSuiteProperties`、`DingTalkLoginProperties`、`DingTalkRobotProperties` |
+| `io.github.easy4j.dingtalk.config` / `config.impl` | `DingTalkConfig`、5 种强类型 Config（CorpApp/PersonalMiniApp/Suite/Login/Robot）、`DingTalkConfigProvider`、`DefaultDingTalkConfigProvider` |
+| `io.github.easy4j.dingtalk.service` / `service.impl` | `DingTalkService`（5 个 `opsFor*`）、`AbstractDingTalkService`、`DefaultDingTalkService`、6 类 Service（Account/Sns/Sso/User/Robot/Jsapi）、`DingTalkAccessTokenProvider` |
+| `io.github.easy4j.dingtalk.registry` | `DingTalkServiceRegistry`、`DefaultDingTalkServiceRegistry` |
+| `io.github.easy4j.dingtalk.storage` | `DingTalkConfigStorage`、`InMemoryDingTalkConfigStorage` |
+| `io.github.easy4j.dingtalk.model.message` | `BaseMessage` + `TextMessage` / `MarkdownMessage` / `LinkMessage` / `ActionCardMessage` / `FeedCardMessage`、`MessageType` |
+| `io.github.easy4j.dingtalk.model.jsapi` | `JsapiTicketSignature`、`TicketType` |
+| `io.github.easy4j.dingtalk.error` | `ErrorCode`、`DingTalkApiException` |
+| `io.github.easy4j.dingtalk.internal` | `JsapiSignatureGenerator`、`NonceGenerator` |
 
 ## 5. 安装
 
@@ -150,24 +155,29 @@ implementation 'io.github.easy4j:dingtalk-sdk-extension:3.0.x.x.20260630-SNAPSHO
 
 ```java
 import com.dingtalk.api.response.OapiRobotSendResponse;
-import com.dingtalk.spring.boot.*;
-import com.dingtalk.spring.boot.property.DingTalkRobotProperties;
 import com.taobao.api.ApiException;
 
 import java.util.Collections;
 
-// 1. 配置一个机器人
-DingTalkRobotProperties robot = new DingTalkRobotProperties();
+import io.github.easy4j.dingtalk.config.DingTalkConfig;
+import io.github.easy4j.dingtalk.config.DingTalkRobotConfig;
+import io.github.easy4j.dingtalk.config.impl.DefaultDingTalkConfigProvider;
+import io.github.easy4j.dingtalk.service.DingTalkAccessTokenProvider;
+import io.github.easy4j.dingtalk.service.DingTalkTemplate;
+import io.github.easy4j.dingtalk.service.impl.DefaultDingTalkAccessTokenProvider;
+
+// 1. 通过 DingTalkConfig 配置机器人
+DingTalkRobotConfig robot = new DingTalkRobotConfig();
 robot.setRobotId("ops-alert");
 robot.setAccessToken("your-robot-access-token");
 robot.setSecretToken("SEC...");                    // 加签请求使用
 
-DingTalkProperties props = new DingTalkProperties();
-props.setCorpId("your-corp-id");
-props.setRobots(Collections.singletonList(robot));
+DingTalkConfig cfg = new DingTalkConfig();
+cfg.setCorpId("your-corp-id");
+cfg.setRobots(Collections.singletonList(robot));
 
-// 2. 装配 Provider 与模板
-DingTalkConfigProvider configProvider = new DefaultDingTalkConfigProvider(props);
+// 2. 装配 Provider 与服务（仅兼容迁移时使用 Deprecated DingTalkTemplate）
+DefaultDingTalkConfigProvider configProvider = new DefaultDingTalkConfigProvider(cfg);
 DingTalkAccessTokenProvider tokenProvider = new DefaultDingTalkAccessTokenProvider(configProvider);
 DingTalkTemplate template = new DingTalkTemplate(configProvider, tokenProvider);
 
@@ -182,29 +192,28 @@ System.out.println(resp.getErrcode() + " / " + resp.getErrmsg());
 
 ## 7. 配置
 
-`DingTalkProperties` 定义了属性前缀 `dingtalk`（常量 `DingTalkProperties.PREFIX`）。
-它是纯 POJO——Spring Boot 中通过 `@ConfigurationProperties(prefix = "dingtalk")`
-绑定：
+`DingTalkConfig` 是 SDK 原生配置 POJO，包含 5 组强类型嵌套列表（`corpApps` / `apps` / `suites` / `logins` / `robots`）以及企业级的 `corpId` 和 `corpSecret`。将实例传入 `DefaultDingTalkConfigProvider`，或自行实现 `DingTalkConfigProvider` 从任意来源读取配置。
 
-| 属性（前缀 `dingtalk`） | 类型 | 说明 |
+| DingTalkConfig 字段 | 类型 | 说明 |
 | :--- | :--- | :--- |
-| `corp-id` | String | 企业 corpId |
-| `corp-secret` | String | 企业密钥 |
-| `corp-apps` | List\<DingTalkCorpAppProperties\> | 企业内部小程序 / H5 应用 |
-| `apps` | List\<DingTalkPersonalMiniAppProperties\> | 第三方个人小程序 |
-| `suites` | List\<DingTalkSuiteProperties\> | 第三方企业套件 |
-| `logins` | List\<DingTalkLoginProperties\> | 扫码登录（移动接入）应用 |
-| `robots` | List\<DingTalkRobotProperties\> | 群机器人（`robotId`、`accessToken`、`secretToken`） |
+| `corpId` | String | 企业 corpId |
+| `corpSecret` | String | 企业密钥 |
+| `corpApps` | List\<DingTalkCorpAppConfig\> | 企业内部小程序 / H5 应用 |
+| `apps` | List\<DingTalkPersonalMiniAppConfig\> | 第三方个人小程序 |
+| `suites` | List\<DingTalkSuiteConfig\> | 第三方企业套件 |
+| `logins` | List\<DingTalkLoginConfig\> | 扫码登录（移动接入）应用 |
+| `robots` | List\<DingTalkRobotConfig\> | 群机器人（`robotId`、`accessToken`、`secretToken`） |
 
-示例（`application.yml`）：
+示例（纯 Java）：
 
-```yaml
-dingtalk:
-  corp-id: your-corp-id
-  robots:
-    - robot-id: ops-alert
-      access-token: your-robot-access-token
-      secret-token: SEC...
+```java
+DingTalkConfig cfg = new DingTalkConfig();
+cfg.setCorpId("your-corp-id");
+DingTalkRobotConfig robot = new DingTalkRobotConfig();
+robot.setRobotId("ops-alert");
+robot.setAccessToken("your-robot-access-token");
+robot.setSecretToken("SEC...");
+cfg.setRobots(Collections.singletonList(robot));
 ```
 
 ## 8. 核心用法 / API
@@ -212,7 +221,7 @@ dingtalk:
 ### 8.1 类型化机器人消息
 
 ```java
-import com.dingtalk.spring.boot.bean.MarkdownMessage;
+import io.github.easy4j.dingtalk.model.message.MarkdownMessage;
 
 MarkdownMessage msg = new MarkdownMessage("Deploy Notice", "**release v1.2.0** finished", true);
 OapiRobotSendResponse resp = template.opsForRobot().sendMessage("corp-1", "ops-alert", msg);
