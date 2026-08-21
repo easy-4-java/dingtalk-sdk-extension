@@ -1,0 +1,70 @@
+/*
+ * Copyright (c) 2018, Loong Wan (https://github.com/loong10k).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+package io.github.easy4j.dingtalk.model.message;
+
+/**
+ * Enumerates avatar visibility options for ActionCard messages.
+ *
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
+ * @since 3.0.0
+ * @see ActionCardMessage
+ */
+public enum HideAvatarType {
+
+    /**
+     * Hide the robot avatar when sending the message.
+     */
+    HIDE("隐藏", "1"),
+
+    /**
+     * Show the robot avatar normally when sending the message.
+     */
+    UNHIDE("不隐藏，正常显示", "0");
+
+    /**
+     * Human-readable comment for this option.
+     */
+    private String comment;
+
+    /**
+     * Numeric string value used by the DingTalk API.
+     */
+    private String value;
+
+    HideAvatarType(String comment, String value) {
+        this.comment = comment;
+        this.value = value;
+    }
+
+    /**
+     * Returns the human-readable comment.
+     *
+     * @return the comment string
+     */
+    public String getComment() {
+        return comment;
+    }
+
+    /**
+     * Returns the API numeric string value.
+     *
+     * @return the value string ("0" or "1")
+     */
+    public String getValue() {
+        return value;
+    }
+
+}
