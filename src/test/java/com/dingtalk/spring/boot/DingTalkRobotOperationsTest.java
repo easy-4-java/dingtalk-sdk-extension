@@ -5,7 +5,7 @@ import com.dingtalk.spring.boot.bean.*;
 import com.dingtalk.spring.boot.config.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +19,7 @@ class DingTalkRobotOperationsTest {
 
         DingTalkConfig props = new DingTalkConfig();
         props.setCorpId("corp1");
-        props.setRobots(List.of(robot));
+        props.setRobots(Collections.singletonList(robot));
 
         DefaultDingTalkConfigProvider configProvider = new DefaultDingTalkConfigProvider(props);
         configProvider.init();
