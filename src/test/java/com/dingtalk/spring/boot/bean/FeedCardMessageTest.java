@@ -3,6 +3,7 @@ package com.dingtalk.spring.boot.bean;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +28,7 @@ class FeedCardMessageTest {
 
     @Test
     void shouldThrowWhenListNotArrayList() {
-        List<FeedCardMessageItem> items = List.of(
+        List<FeedCardMessageItem> items = Collections.singletonList(
                 new FeedCardMessageItem("t", "http://u.com", "http://p.com"));
         assertThrows(IllegalArgumentException.class, () -> new FeedCardMessage(items));
     }

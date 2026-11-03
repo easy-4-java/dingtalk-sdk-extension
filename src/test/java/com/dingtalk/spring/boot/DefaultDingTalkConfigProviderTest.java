@@ -4,7 +4,7 @@ import com.dingtalk.spring.boot.config.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,7 +26,7 @@ class DefaultDingTalkConfigProviderTest {
         app.setAppSecret("secret1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setCorpApps(List.of(app));
+        props.setCorpApps(Collections.singletonList(app));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         DingTalkCorpAppConfig result = provider.getDingTalkCorpAppConfig("corp1", "agent1");
@@ -47,7 +47,7 @@ class DefaultDingTalkConfigProviderTest {
         app.setAgentId("agent1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setCorpApps(List.of(app));
+        props.setCorpApps(Collections.singletonList(app));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertNull(provider.getDingTalkCorpAppConfig("corp1", "unknown"));
@@ -60,7 +60,7 @@ class DefaultDingTalkConfigProviderTest {
         app.setAppSecret("secret1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setApps(List.of(app));
+        props.setApps(Collections.singletonList(app));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertNotNull(provider.getDingTalkPersonalMiniAppConfig("corp1", "app1"));
@@ -79,7 +79,7 @@ class DefaultDingTalkConfigProviderTest {
         app.setAppId("app1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setApps(List.of(app));
+        props.setApps(Collections.singletonList(app));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertNull(provider.getDingTalkPersonalMiniAppConfig("corp1", "unknown"));
@@ -91,7 +91,7 @@ class DefaultDingTalkConfigProviderTest {
         suite.setSuiteId("suite1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setSuites(List.of(suite));
+        props.setSuites(Collections.singletonList(suite));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertNotNull(provider.getDingTalkSuiteConfig("corp1", "suite1"));
@@ -110,7 +110,7 @@ class DefaultDingTalkConfigProviderTest {
         suite.setSuiteId("suite1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setSuites(List.of(suite));
+        props.setSuites(Collections.singletonList(suite));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertNull(provider.getDingTalkSuiteConfig("corp1", "unknown"));
@@ -122,7 +122,7 @@ class DefaultDingTalkConfigProviderTest {
         login.setAppId("login1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setLogins(List.of(login));
+        props.setLogins(Collections.singletonList(login));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertNotNull(provider.getDingTalkLoginConfig("corp1", "login1"));
@@ -141,7 +141,7 @@ class DefaultDingTalkConfigProviderTest {
         login.setAppId("login1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setLogins(List.of(login));
+        props.setLogins(Collections.singletonList(login));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertNull(provider.getDingTalkLoginConfig("corp1", "unknown"));
@@ -153,7 +153,7 @@ class DefaultDingTalkConfigProviderTest {
         robot.setRobotId("robot1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setRobots(List.of(robot));
+        props.setRobots(Collections.singletonList(robot));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertNotNull(provider.getDingTalkRobotConfig("corp1", "robot1"));
@@ -172,7 +172,7 @@ class DefaultDingTalkConfigProviderTest {
         robot.setRobotId("robot1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setRobots(List.of(robot));
+        props.setRobots(Collections.singletonList(robot));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         assertNull(provider.getDingTalkRobotConfig("corp1", "unknown"));
@@ -213,10 +213,10 @@ class DefaultDingTalkConfigProviderTest {
         login.setAppSecret("loginSecret");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setCorpApps(List.of(corpApp));
-        props.setApps(List.of(miniApp));
-        props.setSuites(List.of(suite));
-        props.setLogins(List.of(login));
+        props.setCorpApps(Collections.singletonList(corpApp));
+        props.setApps(Collections.singletonList(miniApp));
+        props.setSuites(Collections.singletonList(suite));
+        props.setLogins(Collections.singletonList(login));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         provider.init();
@@ -235,7 +235,7 @@ class DefaultDingTalkConfigProviderTest {
         corpApp.setAppSecret("secret1");
 
         DingTalkConfig props = new DingTalkConfig();
-        props.setCorpApps(List.of(corpApp));
+        props.setCorpApps(Collections.singletonList(corpApp));
 
         DefaultDingTalkConfigProvider provider = new DefaultDingTalkConfigProvider(props);
         provider.init();
