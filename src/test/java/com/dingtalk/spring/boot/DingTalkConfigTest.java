@@ -3,6 +3,7 @@ package com.dingtalk.spring.boot;
 import com.dingtalk.spring.boot.config.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +32,7 @@ class DingTalkConfigTest {
     @Test
     void shouldSetAndGetCorpApps() {
         DingTalkConfig props = new DingTalkConfig();
-        List<DingTalkCorpAppConfig> apps = List.of(new DingTalkCorpAppConfig());
+        List<DingTalkCorpAppConfig> apps = Collections.singletonList(new DingTalkCorpAppConfig());
         props.setCorpApps(apps);
         assertEquals(1, props.getCorpApps().size());
     }
@@ -39,7 +40,7 @@ class DingTalkConfigTest {
     @Test
     void shouldSetAndGetApps() {
         DingTalkConfig props = new DingTalkConfig();
-        List<DingTalkPersonalMiniAppConfig> apps = List.of(new DingTalkPersonalMiniAppConfig());
+        List<DingTalkPersonalMiniAppConfig> apps = Collections.singletonList(new DingTalkPersonalMiniAppConfig());
         props.setApps(apps);
         assertEquals(1, props.getApps().size());
     }
@@ -47,7 +48,7 @@ class DingTalkConfigTest {
     @Test
     void shouldSetAndGetSuites() {
         DingTalkConfig props = new DingTalkConfig();
-        List<DingTalkSuiteConfig> suites = List.of(new DingTalkSuiteConfig());
+        List<DingTalkSuiteConfig> suites = Collections.singletonList(new DingTalkSuiteConfig());
         props.setSuites(suites);
         assertEquals(1, props.getSuites().size());
     }
@@ -55,7 +56,7 @@ class DingTalkConfigTest {
     @Test
     void shouldSetAndGetLogins() {
         DingTalkConfig props = new DingTalkConfig();
-        List<DingTalkLoginConfig> logins = List.of(new DingTalkLoginConfig());
+        List<DingTalkLoginConfig> logins = Collections.singletonList(new DingTalkLoginConfig());
         props.setLogins(logins);
         assertEquals(1, props.getLogins().size());
     }
@@ -63,7 +64,7 @@ class DingTalkConfigTest {
     @Test
     void shouldSetAndGetRobots() {
         DingTalkConfig props = new DingTalkConfig();
-        List<DingTalkRobotConfig> robots = List.of(new DingTalkRobotConfig());
+        List<DingTalkRobotConfig> robots = Collections.singletonList(new DingTalkRobotConfig());
         props.setRobots(robots);
         assertEquals(1, props.getRobots().size());
     }

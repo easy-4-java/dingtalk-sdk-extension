@@ -47,6 +47,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Dependency versions -->
         <additionalparam>-Xdoclint:none</additionalparam>
+        <!-- Keep Surefire usable when JaCoCo prepare-agent is not executed. -->
+        <argLine></argLine>
         <commons-collections4.version>4.5.0</commons-collections4.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <dingtalk-service-sdk.version>2.0.0</dingtalk-service-sdk.version>
@@ -314,7 +316,7 @@
                     <configuration>
                         <skip>false</skip>
                         <skipTests>false</skipTests>
-                        <argLine>-Xmx1024m -Dfile.encoding=UTF-8</argLine>
+                        <argLine>@{argLine} -Xmx1024m -Dfile.encoding=UTF-8</argLine>
                         <excludedGroups>integration</excludedGroups>
                         <additionalClasspathElements>
                             <additionalClasspathElement>${basedir}/target/test-classes</additionalClasspathElement>

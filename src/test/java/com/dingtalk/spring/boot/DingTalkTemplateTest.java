@@ -4,7 +4,7 @@ import com.dingtalk.spring.boot.config.*;
 import com.taobao.api.ApiException;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,8 +24,8 @@ class DingTalkTemplateTest {
         DingTalkConfig props = new DingTalkConfig();
         props.setCorpId("corp1");
         props.setCorpSecret("corpSecret1");
-        props.setCorpApps(List.of(corpApp));
-        props.setRobots(List.of(robot));
+        props.setCorpApps(Collections.singletonList(corpApp));
+        props.setRobots(Collections.singletonList(robot));
 
         DefaultDingTalkConfigProvider configProvider = new DefaultDingTalkConfigProvider(props);
         configProvider.init();
