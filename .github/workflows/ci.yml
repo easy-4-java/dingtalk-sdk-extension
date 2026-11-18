@@ -10,9 +10,9 @@ name: CI
 
 on:
   push:
-    branches: [feature/1.0.x]
+    branches: [feature/1.0.x, 'test/**']
   pull_request:
-    branches: [feature/1.0.x]
+    branches: [feature/1.0.x, 'test/**']
   workflow_dispatch:
 
 permissions:
